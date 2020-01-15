@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/dd29809f-e3e7-4e30-9ac9-649eb1a1cfb1/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/restfulApiTest",
+    "appService.deploySubpath": ""
+}

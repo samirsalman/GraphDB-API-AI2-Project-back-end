@@ -1,0 +1,22 @@
+{
+  "name": "noderestfulapi",
+  "version": "1.0.0",
+  "description": "A default RESTful API structure",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "Samir Salman",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-api-doc": "0.0.12",
+    "fs": "0.0.1-security",
+    "gh-pages": "^2.1.1",
+    "graphdb": "^1.1.1",
+    "https": "^1.0.0",
+    "mongoose": "^5.8.0",
+    "nodemon": "^2.0.1"
+  }
+}
