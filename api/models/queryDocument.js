@@ -1,5 +1,6 @@
 class QueryDocument {
-  constructor(title, year, authors, isbn) {
+  constructor(uri, title, year, authors, isbn) {
+    this.uri = uri;
     this.title = title;
     this.year = year;
     this.authors = authors;

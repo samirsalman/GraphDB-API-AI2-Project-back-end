@@ -28,6 +28,7 @@ const repositoryClientConfig = new RepositoryClientConfig(
   readTimeout,
   writeTimeout
 );
+
 var query = router.get("/all", (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
@@ -151,12 +152,14 @@ router.get("/searchByTitle/:name", (req, res, next) => {
 
       rdfRepositoryClient.query(payload).then(stream => {
         stream.on("data", bindings => {
+          console.log(bindings);
           results.push(
             new QueryDocument(
-              bindings.title.value,
-              bindings.year != null ? bindings.year.value : "",
-              bindings.name != null ? bindings.name.value : "",
-              bindings.isbn.value
+              bindings.book,
+              bindings.title,
+              bindings.year != null ? bindings.year : "",
+              bindings.name != null ? bindings.name : "",
+              bindings.isbn
             )
           );
         });
