@@ -101,6 +101,7 @@ var query = router.get("/all", (req, res, next) => {
         stream.on("data", bindings => {
           results.push(
             new QueryDocument(
+              bindings.book,
               bindings.title.value,
               bindings.year != null ? bindings.year.value : "",
               bindings.name != null ? bindings.name.value : "",
@@ -156,10 +157,10 @@ router.get("/searchByTitle/:name", (req, res, next) => {
           results.push(
             new QueryDocument(
               bindings.book,
-              bindings.title,
-              bindings.year != null ? bindings.year : "",
-              bindings.name != null ? bindings.name : "",
-              bindings.isbn
+              bindings.title.value,
+              bindings.year != null ? bindings.year.value : "",
+              bindings.name != null ? bindings.name.value : "",
+              bindings.isbn.value
             )
           );
         });
@@ -209,6 +210,7 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
         stream.on("data", bindings => {
           results.push(
             new QueryDocument(
+              bindings.book,
               bindings.title.value,
               bindings.year != null ? bindings.year.value : "",
               bindings.name != null ? bindings.name.value : "",
@@ -262,6 +264,7 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
         stream.on("data", bindings => {
           results.push(
             new QueryDocument(
+              bindings.book,
               bindings.title.value,
               bindings.year != null ? bindings.year.value : "",
               bindings.name != null ? bindings.name.value : "",
