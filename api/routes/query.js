@@ -13,14 +13,12 @@ const {
 } = require("graphdb").query;
 const QueryDocument = require("../models/queryDocument");
 const QueryStrings = require("../models/queryStrings");
-var QueryStringsConst = new QueryStrings();
-
 const express = require("express");
 const router = express.Router();
 
+var QueryStringsConst = new QueryStrings();
 var results = [];
 var hashResult = new Map();
-
 const readTimeout = 30000;
 const writeTimeout = 30000;
 const config = new ServerClientConfig("http://localhost:7200/", 0, {});
