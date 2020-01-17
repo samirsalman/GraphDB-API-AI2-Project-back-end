@@ -33,6 +33,8 @@ const repositoryClientConfig = new RepositoryClientConfig(
 
 var rdfRepositoryClient;
 server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
+  console.log("REPOSITORY GET");
+
   rdfRepositoryClient = rep;
   rdfRepositoryClient.registerParser(new SparqlXmlResultParser());
 });
@@ -91,7 +93,7 @@ function createResults(bindings) {
     bindings.title.value.replace(new RegExp("[{,}]", "g"), ""),
     bindings.year != null ? bindings.year.value : "",
     bindings.name != null ? bindings.name.value.replace(",", " ") : "",
-    bindings.isbn.value
+    bindings.isbn != null ? bindings.isbn.value : ""
   );
   if (hashResult.get(t.uri.id) !== undefined) {
     console.log(t.uri.id);
@@ -110,6 +112,8 @@ function createResults(bindings) {
 
 var query = router.get("/all", (req, res, next) => {
   clearDataStructures();
+  console.log("GET ALL RECEIVED");
+
   query = QueryStringsConst.allQuery;
   const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
@@ -126,33 +130,17 @@ var query = router.get("/all", (req, res, next) => {
 });
 
 router.get("/searchByTitle/:name", (req, res, next) => {
+  console.log("GET BY TITLE RECEIVED");
+
   clearDataStructures();
 
-  var query = `PREFIX bibo: <http://purl.org/ontology/bibo/>
-  PREFIX dc: <http://purl.org/dc/elements/1.1/>
-  PREFIX dc0: <http://purl.org/dc/terms/>
-  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-  
-  select ?book ?title ?name ?year ?isbn where { 
-    ?book  a   bibo:Document .
-      ?book bibo:isbn ?isbn .
-      ?book dc:title ?title .
-      
-      OPTIONAL{
-      ?book dc:date ?year .
-      ?book dc0:creator ?authors .
-      ?authors foaf:name ?name .
-      }
-      FILTER regex(?title, "${req.params.name}", "i").
-  }`;
+  var query = QueryStringsConst.searchByTitleQuery(req.params.name, false);
 
   const payload = createSelectQuery(query);
 
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
+      console.log(bindings);
       createResults(bindings);
     });
     stream.on("end", () => {
@@ -166,27 +154,9 @@ router.get("/searchByTitle/:name", (req, res, next) => {
 
 router.get("/searchByIsbn/:isbn", (req, res, next) => {
   clearDataStructures();
+  console.log("GET BY ISBN RECEIVED");
 
-  query = `PREFIX bibo: <http://purl.org/ontology/bibo/>
-  PREFIX dc: <http://purl.org/dc/elements/1.1/>
-  PREFIX dc0: <http://purl.org/dc/terms/>
-  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-  
-  select ?book ?title ?name ?year ?isbn where { 
-    ?book  a   bibo:Document .
-      ?book bibo:isbn ?isbn .
-      ?book dc:title ?title .
-      
-      OPTIONAL{
-      ?book dc:date ?year .
-      ?book dc0:creator ?authors .
-      ?authors foaf:name ?name .
-      }
-      FILTER regex(?isbn, "${req.params.isbn}", "i").
-  }`;
+  query = QueryStringsConst.searchByISBNQuery(req.params.isbn, true);
 
   const payload = createSelectQuery(query);
 
@@ -205,32 +175,16 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
 
 router.get("/searchByAuthor/:author", (req, res, next) => {
   clearDataStructures();
+  console.log("GET BY AUTHOR RECEIVED");
 
-  query = `PREFIX bibo: <http://purl.org/ontology/bibo/>
-  PREFIX dc: <http://purl.org/dc/elements/1.1/>
-  PREFIX dc0: <http://purl.org/dc/terms/>
-  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-  
-  select ?book ?title ?name ?year ?isbn where { 
-    ?book  a   bibo:Document .
-      ?book bibo:isbn ?isbn .
-      ?book dc:title ?title .
-      
-      OPTIONAL{
-      ?book dc:date ?year .
-      ?book dc0:creator ?authors .
-      ?authors foaf:name ?name .
-      }
-      FILTER regex(?name, "${req.params.author}", "i").
-  }`;
+  query = QueryStringsConst.searchByAuthorQuery(req.params.author, false);
 
   const payload = createSelectQuery(query);
 
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
+      console.log(bindings);
+
       createResults(bindings);
     });
     stream.on("end", () => {
