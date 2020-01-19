@@ -87,7 +87,7 @@ var query = router.get("/all", (req, res, next) => {
   clearDataStructures();
   console.log("GET ALL RECEIVED");
 
-  query = QueryStringsConst.allQuery;
+  query = QueryStringsConst.allQuery(req.query.year);
   const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
@@ -102,15 +102,16 @@ var query = router.get("/all", (req, res, next) => {
   });
 });
 
-router.get("/searchByTitle/:name/:orderBy?", (req, res, next) => {
+router.get("/searchByTitle/:name", (req, res, next) => {
   console.log("GET BY TITLE RECEIVED");
-  console.log(req.params);
+  console.log(req.query);
 
   clearDataStructures();
 
   var query = QueryStringsConst.searchByTitleQuery(
     req.params.name,
-    req.params.orderBy
+    req.query.orderBy,
+    req.query.year
   );
 
   const payload = createSelectQuery(query);
@@ -129,13 +130,13 @@ router.get("/searchByTitle/:name/:orderBy?", (req, res, next) => {
   });
 });
 
-router.get("/searchByIsbn/:isbn/:orderBy?", (req, res, next) => {
+router.get("/searchByIsbn/:isbn", (req, res, next) => {
   clearDataStructures();
   console.log("GET BY ISBN RECEIVED");
 
   query = QueryStringsConst.searchByISBNQuery(
-    req.params.isbn,
-    req.params.orderBy
+    req.query.orderBy,
+    req.query.year
   );
 
   const payload = createSelectQuery(query);
@@ -153,13 +154,15 @@ router.get("/searchByIsbn/:isbn/:orderBy?", (req, res, next) => {
   });
 });
 
-router.get("/searchByAuthor/:author/:orderBy?", (req, res, next) => {
+router.get("/searchByAuthor/:author", (req, res, next) => {
   clearDataStructures();
   console.log("GET BY AUTHOR RECEIVED");
+  console.log(req.query);
 
   query = QueryStringsConst.searchByAuthorQuery(
     req.params.author,
-    req.params.orderBy
+    req.query.orderBy,
+    req.query.year
   );
 
   const payload = createSelectQuery(query);

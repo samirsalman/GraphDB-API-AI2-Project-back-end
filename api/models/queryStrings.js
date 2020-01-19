@@ -1,5 +1,10 @@
 class QueryStrings {
-  allQuery = `PREFIX bibo: <http://purl.org/ontology/bibo/>
+  allQuery = (year = null) => {
+    var yearString = "";
+    if (year !== null) {
+      yearString = `FILTER regex(?year, "${year}", "i")`;
+    }
+    return `PREFIX bibo: <http://purl.org/ontology/bibo/>
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
     PREFIX dc0: <http://purl.org/dc/terms/>
     PREFIX foaf: <http://xmlns.com/foaf/0.1/>
@@ -17,13 +22,20 @@ class QueryStrings {
         ?book dc0:creator ?authors .
         ?authors foaf:name ?name .
         }
+        ${yearString}
     }`;
+  };
 
-  searchByISBNQuery = (isbn, orderBy = null) => {
+  searchByISBNQuery = (isbn, orderBy = null, year = null) => {
     var orderedString = "";
+    var yearString = "";
     if (orderBy !== null) {
       orderedString = `ORDER BY ?${orderBy}`;
     }
+    if (year !== null) {
+      yearString = `&& regex(?year, "${year}", "i")`;
+    }
+
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
       PREFIX dc0: <http://purl.org/dc/terms/>
@@ -42,15 +54,21 @@ class QueryStrings {
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }
-          FILTER regex(?isbn, "${isbn}", "i") .
+          FILTER (regex(?isbn, "${isbn}", "i") ${yearString}) .
          
       } ${orderedString}`;
   };
 
-  searchByTitleQuery = (title, orderBy = null) => {
+  searchByTitleQuery = (title, orderBy = null, year = null) => {
     var orderedString = "";
+    var yearString = "";
+
     if (orderBy !== null) {
       orderedString = `ORDER BY ?${orderBy}`;
+    }
+
+    if (year !== null) {
+      yearString = `&& regex(?year, "${year}", "i")`;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -70,15 +88,20 @@ class QueryStrings {
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }
-          FILTER regex(?title, "${title}", "i") .
+          FILTER (regex(?title, "${title}", "i") ${yearString}) .
          
       } ${orderedString}`;
   };
 
-  searchByAuthorQuery = (author, orderBy = null) => {
+  searchByAuthorQuery = (author, orderBy = null, year = null) => {
     var orderedString = "";
+    var yearString = "";
+
     if (orderBy !== null) {
       orderedString = `ORDER BY ?${orderBy}`;
+    }
+    if (year !== null) {
+      yearString = `&& regex(?year, "${year}", "i")`;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -98,7 +121,7 @@ class QueryStrings {
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }
-          FILTER regex(?name, "${author}", "i") .
+          FILTER (regex(?name, "${author}", "i") ${yearString}) .
           
       }${orderedString}`;
   };
