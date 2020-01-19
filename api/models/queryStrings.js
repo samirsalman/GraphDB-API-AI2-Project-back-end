@@ -19,10 +19,10 @@ class QueryStrings {
         }
     }`;
 
-  searchByISBNQuery = (isbn, ordered = false) => {
+  searchByISBNQuery = (isbn, orderBy = null) => {
     var orderedString = "";
-    if (ordered) {
-      orderedString = `ORDER BY (${isbn})`;
+    if (orderBy !== null) {
+      orderedString = `ORDER BY ?${orderBy}`;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -47,10 +47,10 @@ class QueryStrings {
       } ${orderedString}`;
   };
 
-  searchByTitleQuery = (title, ordered = false) => {
+  searchByTitleQuery = (title, orderBy = null) => {
     var orderedString = "";
-    if (ordered) {
-      orderedString = `ORDER BY (${title})`;
+    if (orderBy !== null) {
+      orderedString = `ORDER BY ?${orderBy}`;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -75,10 +75,10 @@ class QueryStrings {
       } ${orderedString}`;
   };
 
-  searchByAuthorQuery = (author, ordered = false) => {
+  searchByAuthorQuery = (author, orderBy = null) => {
     var orderedString = "";
-    if (ordered) {
-      orderedString = `ORDER BY (${author})`;
+    if (orderBy !== null) {
+      orderedString = `ORDER BY ?${orderBy}`;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>

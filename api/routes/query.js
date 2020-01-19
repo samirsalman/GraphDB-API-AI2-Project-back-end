@@ -51,34 +51,7 @@ function clearDataStructures() {
   hashResult.clear();
 }
 
-var query = router.get("/all", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-
-var query = router.get("/searchByTitle/:name", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-
-var query = router.get("/searchByAuthor/:author", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-
-var query = router.get("/searchByIsbn/:isbn", (req, res, next) => {
+var query = router.get("/*", (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
     "Access-Control-Allow-Headers",
@@ -129,12 +102,16 @@ var query = router.get("/all", (req, res, next) => {
   });
 });
 
-router.get("/searchByTitle/:name", (req, res, next) => {
+router.get("/searchByTitle/:name/:orderBy?", (req, res, next) => {
   console.log("GET BY TITLE RECEIVED");
+  console.log(req.params);
 
   clearDataStructures();
 
-  var query = QueryStringsConst.searchByTitleQuery(req.params.name, false);
+  var query = QueryStringsConst.searchByTitleQuery(
+    req.params.name,
+    req.params.orderBy
+  );
 
   const payload = createSelectQuery(query);
 
@@ -152,11 +129,14 @@ router.get("/searchByTitle/:name", (req, res, next) => {
   });
 });
 
-router.get("/searchByIsbn/:isbn", (req, res, next) => {
+router.get("/searchByIsbn/:isbn/:orderBy?", (req, res, next) => {
   clearDataStructures();
   console.log("GET BY ISBN RECEIVED");
 
-  query = QueryStringsConst.searchByISBNQuery(req.params.isbn, true);
+  query = QueryStringsConst.searchByISBNQuery(
+    req.params.isbn,
+    req.params.orderBy
+  );
 
   const payload = createSelectQuery(query);
 
@@ -173,11 +153,14 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
   });
 });
 
-router.get("/searchByAuthor/:author", (req, res, next) => {
+router.get("/searchByAuthor/:author/:orderBy?", (req, res, next) => {
   clearDataStructures();
   console.log("GET BY AUTHOR RECEIVED");
 
-  query = QueryStringsConst.searchByAuthorQuery(req.params.author, false);
+  query = QueryStringsConst.searchByAuthorQuery(
+    req.params.author,
+    req.params.orderBy
+  );
 
   const payload = createSelectQuery(query);
 
