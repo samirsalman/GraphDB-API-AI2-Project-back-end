@@ -34,7 +34,7 @@ class QueryStrings {
     var orderedString = "";
     var yearString = "";
     if (orderBy !== null) {
-      orderedString = `ORDER BY ?${orderBy}`;
+      orderedString = `ORDER BY DESC(?${orderBy})`;
     }
     if (year !== null) {
       var splitting = year.toString().split("-");
