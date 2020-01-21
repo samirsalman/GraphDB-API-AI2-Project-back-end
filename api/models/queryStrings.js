@@ -38,7 +38,11 @@ class QueryStrings {
     
     
     if (orderBy !== null) {
-      orderedString = `ORDER BY DESC(?${orderBy})`;
+      if(orderBy === "year"){
+        orderedString = `ORDER BY DESC(?${orderBy})`;
+      }else{
+        orderedString = `ORDER BY (?${orderBy})`;
+      }
     }
     if (year !== null) {
       var splitting = year.toString().split("-");
@@ -88,7 +92,11 @@ class QueryStrings {
     var filterString = "";
 
     if (orderBy !== null) {
-      orderedString = `ORDER BY ?${orderBy}`;
+      if(orderBy === "year"){
+        orderedString = `ORDER BY DESC(?${orderBy})`;
+      }else{
+        orderedString = `ORDER BY (?${orderBy})`;
+      }
     }
 
     if (year !== null) {
@@ -138,7 +146,11 @@ class QueryStrings {
     var filterString = "";
 
     if (orderBy !== null) {
-      orderedString = `ORDER BY ?${orderBy}`;
+      if(orderBy === "year"){
+        orderedString = `ORDER BY DESC(?${orderBy})`;
+      }else{
+        orderedString = `ORDER BY (?${orderBy})`;
+      }
     }
     if (year !== null) {
       var splitting = year.toString().split("-");
