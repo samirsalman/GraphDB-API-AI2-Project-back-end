@@ -1,6 +1,6 @@
 class QueryStrings {
   allQuery = (year = null) => {
-    console.log(bubu);
+    var yearString = "";
     if (year !== null) {
       var splitting = year.toString().split("-");
       var year1 = splitting[0];
@@ -35,12 +35,11 @@ class QueryStrings {
     var yearString = "";
     var typeDoc = "Document";
     var filterString = "";
-    
-    
+
     if (orderBy !== null) {
-      if(orderBy === "year"){
+      if (orderBy === "year") {
         orderedString = `ORDER BY DESC(?${orderBy})`;
-      }else{
+      } else {
         orderedString = `ORDER BY (?${orderBy})`;
       }
     }
@@ -50,7 +49,7 @@ class QueryStrings {
       var year2 = splitting[1];
       yearString = ` && (xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2}) `;
     }
-    if(type !== null){
+    if (type !== null) {
       typeDoc = type.toString();
       filterString = `FILTER NOT EXISTS { 
         ?book rdf:type ?c . 
@@ -92,9 +91,9 @@ class QueryStrings {
     var filterString = "";
 
     if (orderBy !== null) {
-      if(orderBy === "year"){
+      if (orderBy === "year") {
         orderedString = `ORDER BY DESC(?${orderBy})`;
-      }else{
+      } else {
         orderedString = `ORDER BY (?${orderBy})`;
       }
     }
@@ -105,7 +104,7 @@ class QueryStrings {
       var year2 = splitting[1];
       yearString = `&& (xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2}) `;
     }
-    if(type !== null){
+    if (type !== null) {
       typeDoc = type.toString();
       filterString = `FILTER NOT EXISTS { 
         ?book rdf:type ?c . 
@@ -146,9 +145,9 @@ class QueryStrings {
     var filterString = "";
 
     if (orderBy !== null) {
-      if(orderBy === "year"){
+      if (orderBy === "year") {
         orderedString = `ORDER BY DESC(?${orderBy})`;
-      }else{
+      } else {
         orderedString = `ORDER BY (?${orderBy})`;
       }
     }
@@ -158,7 +157,7 @@ class QueryStrings {
       var year2 = splitting[1];
       yearString = `&& (xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2}) `;
     }
-    if(type !== null){
+    if (type !== null) {
       typeDoc = type.toString();
       filterString = `FILTER NOT EXISTS { 
         ?book rdf:type ?c . 
@@ -191,7 +190,6 @@ class QueryStrings {
           
       }${orderedString}`;
   };
-
 }
 
 module.exports = QueryStrings;
