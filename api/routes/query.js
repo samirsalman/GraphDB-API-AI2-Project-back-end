@@ -86,7 +86,7 @@ function createResults(bindings) {
 var query = router.get("/all", (req, res, next) => {
   clearDataStructures();
   console.log("GET ALL RECEIVED");
-
+  console.log(req.query.year);
   query = QueryStringsConst.allQuery(req.query.year);
   const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {

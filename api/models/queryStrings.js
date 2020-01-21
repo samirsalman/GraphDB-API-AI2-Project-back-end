@@ -2,7 +2,10 @@ class QueryStrings {
   allQuery = (year = null) => {
     var yearString = "";
     if (year !== null) {
-      yearString = `FILTER regex(?year, "${year}", "i")`;
+      var splitting = year.toString().split("-");
+      var year1 = splitting[0];
+      var year2 = splitting[1];
+      yearString = `FILTER ((xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2})) . `;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -11,6 +14,7 @@ class QueryStrings {
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
     select ?book ?title ?name ?year ?isbn where { 
       ?book  a   bibo:Document .
@@ -33,7 +37,10 @@ class QueryStrings {
       orderedString = `ORDER BY ?${orderBy}`;
     }
     if (year !== null) {
-      yearString = `&& regex(?year, "${year}", "i")`;
+      var splitting = year.toString().split("-");
+      var year1 = splitting[0];
+      var year2 = splitting[1];
+      yearString = ` && (xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2}) `;
     }
 
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
@@ -54,7 +61,7 @@ class QueryStrings {
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }
-          FILTER (regex(?isbn, "${isbn}", "i") ${yearString}) .
+          FILTER ((regex(?isbn, "${isbn}", "i")) ${yearString}) .
          
       } ${orderedString}`;
   };
@@ -68,7 +75,10 @@ class QueryStrings {
     }
 
     if (year !== null) {
-      yearString = `&& regex(?year, "${year}", "i")`;
+      var splitting = year.toString().split("-");
+      var year1 = splitting[0];
+      var year2 = splitting[1];
+      yearString = `&& (xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2}) `;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -88,7 +98,7 @@ class QueryStrings {
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }
-          FILTER (regex(?title, "${title}", "i") ${yearString}) .
+          FILTER ((regex(?title, "${title}", "i")) ${yearString}) .
          
       } ${orderedString}`;
   };
@@ -101,7 +111,10 @@ class QueryStrings {
       orderedString = `ORDER BY ?${orderBy}`;
     }
     if (year !== null) {
-      yearString = `&& regex(?year, "${year}", "i")`;
+      var splitting = year.toString().split("-");
+      var year1 = splitting[0];
+      var year2 = splitting[1];
+      yearString = `&& (xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2}) `;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -121,7 +134,7 @@ class QueryStrings {
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }
-          FILTER (regex(?name, "${author}", "i") ${yearString}) .
+          FILTER ((regex(?name, "${author}", "i")) ${yearString}) .
           
       }${orderedString}`;
   };
