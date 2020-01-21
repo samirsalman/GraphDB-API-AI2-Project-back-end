@@ -63,7 +63,7 @@ var query = router.get("/*", (req, res, next) => {
 function createResults(bindings) {
   var t = new QueryDocument(
     bindings.book,
-    bindings.title.value.replace(new RegExp("[{,}]", "g"), ""),
+    bindings.title != null ? bindings.title.value.replace(new RegExp("[{,}]", "g"), "") : "",
     bindings.year != null ? bindings.year.value : "",
     bindings.name != null ? bindings.name.value.replace(",", " ") : "",
     bindings.isbn != null ? bindings.isbn.value : ""
@@ -111,7 +111,8 @@ router.get("/searchByTitle/:name", (req, res, next) => {
   var query = QueryStringsConst.searchByTitleQuery(
     req.params.name,
     req.query.orderBy,
-    req.query.year
+    req.query.year,
+    req.query.type
   );
 
   const payload = createSelectQuery(query);
@@ -134,9 +135,12 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
   clearDataStructures();
   console.log("GET BY ISBN RECEIVED");
 
+
   query = QueryStringsConst.searchByISBNQuery(
+    req.params.isbn,
     req.query.orderBy,
-    req.query.year
+    req.query.year,
+    req.query.type
   );
 
   const payload = createSelectQuery(query);
@@ -162,7 +166,8 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
   query = QueryStringsConst.searchByAuthorQuery(
     req.params.author,
     req.query.orderBy,
-    req.query.year
+    req.query.year,
+    req.query.type
   );
 
   const payload = createSelectQuery(query);
@@ -181,5 +186,6 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
     });
   });
 });
+
 
 module.exports = router;
