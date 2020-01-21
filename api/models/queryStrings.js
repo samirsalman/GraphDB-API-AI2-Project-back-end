@@ -1,6 +1,6 @@
 class QueryStrings {
   allQuery = (year = null) => {
-    var yearString = "";
+    console.log(bubu);
     if (year !== null) {
       var splitting = year.toString().split("-");
       var year1 = splitting[0];
@@ -179,6 +179,7 @@ class QueryStrings {
           
       }${orderedString}`;
   };
+
 }
 
 module.exports = QueryStrings;
