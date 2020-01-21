@@ -8,16 +8,14 @@ class InsertStrings {
     year = null,
     isbn = null
   ) => {
-    var authorsConc;
+    var authorsConc = "";
     var publisherIns = "";
     var isbnIns = "";
 
-    //TODO definire se autore è obbligatorio come campo
     if (author !== null) {
-      for (i = 0; i < author.lenght; i++) {
-        var uri = md5Hash(Math.random() * 66464654649494949797979464566);
-
-        authorsConc += author[i].toString();
+      for (var i = 0; i < author.lenght; i++) {
+        authorsConc += author[i].name;
+        console.log("AUTORE:", author[i]);
       }
     }
 
@@ -25,13 +23,18 @@ class InsertStrings {
       title.toString() + authorsConc.toString() + year.toString()
     );
 
+    var authorString = "";
+
+    author.map(el => {
+      authorString += `<http://purl.org/ontology/bibo/${uriDocument}>  dc:creator <http://purl.org/ontology/bibo/${el.authUri}> . `;
+    });
+
     if (publisher !== null) {
       publisherIns = `<http://purl.org/ontology/bibo/${uriDocument}> dc:publisher "${publisher.toString()}" .`;
     }
     if (isbn !== null) {
-      isbnIns = `<http://purl.org/ontology/bibo/${uriDocument}> bibo:isbn "${isbnIns}" .`;
+      isbnIns = `<http://purl.org/ontology/bibo/${uriDocument}> bibo:isbn "${isbn}" .`;
     }
-
 
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
         PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -44,16 +47,16 @@ class InsertStrings {
         INSERT DATA
               { 
                   <http://purl.org/ontology/bibo/${uriDocument}>          rdf:type bibo:Book .
-                  <http://purl.org/ontology/bibo/${uriDocument}>          dc:creator "" .
+                  ${authorString}
                   <http://purl.org/ontology/bibo/${uriDocument}>          dc:title "${title.toString()}" .
                   ${publisherIns}
-                  <http://purl.org/ontology/bibo/${uriDocument}>          dc:date "" .
+                  <http://purl.org/ontology/bibo/${uriDocument}>          dc:date "${year}" .
                   ${isbnIns}
               }`;
   };
 
-  insertAuthor = name => {
-
+  insertAuthor = (name, uri) => {
+    console.log(name);
 
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -69,10 +72,6 @@ class InsertStrings {
                 <http://purl.org/ontology/bibo/${uri}> foaf:Name "${name.toString()}" .
             }`;
   };
-
-
 }
-
-
 
 module.exports = InsertStrings;
