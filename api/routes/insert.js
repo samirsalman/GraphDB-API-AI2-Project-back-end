@@ -43,8 +43,9 @@ var query = router.post("/*", (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Accept"
   );
+  res.header("Content-Type", "application/json");
   next();
 });
 
@@ -68,10 +69,8 @@ function createInsertQuery(query) {
     .setTimeout(5);
 }
 
-router.post("/book", async (req, res, next) => {
+var query = router.post("/book", async (req, res, next) => {
   var authorsArray = [];
-  console.log("INSERT BOOK REQ");
-
   req.body.authors.map(el => {
     var uri = md5Hash(Math.random() * 66464654649494949797979464566);
     authorsArray.push({
@@ -94,14 +93,14 @@ router.post("/book", async (req, res, next) => {
       rdfRepositoryClient.update(payload).then(() => {
         res.status(200).json({
           response: "Success"
-        });
+        })
       });
     })
     .catch(error => {
       console.log(error);
       res.status(500).json({
         response: "Error"
-      });
+      })
     });
 });
 
@@ -128,11 +127,16 @@ router.post("/article", async (req, res, next) => {
         )
       );
       rdfRepositoryClient.update(payload).then(() => {
-        res.status(200).json(req.body.authors);
+        res.status(200).json({
+          response: "Success"
+        })
       });
     })
     .catch(error => {
       console.log(error);
+      res.status(500).json({
+        response: "Error"
+      })
     });
 });
 
@@ -160,11 +164,16 @@ router.post("/inProceedings", async (req, res, next) => {
         )
       );
       rdfRepositoryClient.update(payload).then(() => {
-        res.status(200).json(req.body.authors);
+        res.status(200).json({
+          response: "Success"
+        })
       });
     })
     .catch(error => {
       console.log(error);
+      res.status(500).json({
+        response: "Error"
+      })
     });
 });
 
