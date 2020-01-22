@@ -1,5 +1,6 @@
 class QueryStrings {
   allQuery = (year = null) => {
+
     var yearString = "";
     if (year !== null) {
       var splitting = year.toString().split("-");
