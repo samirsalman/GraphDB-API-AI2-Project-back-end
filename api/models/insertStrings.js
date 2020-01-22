@@ -170,7 +170,7 @@ class InsertStrings {
         
         INSERT DATA
               { 
-                  <http://purl.org/ontology/bibo/${uriDocument}>          rdf:type bibo:Article .
+                  <http://purl.org/ontology/bibo/${uriDocument}>          rdf:type bibo:InProceedings .
                   ${authorString}
                   <http://purl.org/ontology/bibo/${uriDocument}>          dc:title "${title.toString()}" .
                   ${publisherIns}
