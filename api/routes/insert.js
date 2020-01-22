@@ -99,4 +99,67 @@ var query = router.post("/book", async (req, res, next) => {
     });
 });
 
+router.post("/article", async (req, res, next) => {
+  var authorsArray = [];
+  req.body.authors.map(el => {
+    var uri = md5Hash(Math.random() * 66464654649494949797979464566);
+    authorsArray.push({
+      name: el,
+      authUri: uri
+    });
+  });
+
+  insertAllAuthors(authorsArray)
+    .then(response => {
+      const payload = createInsertQuery(
+        InsertQuery.insertArticle(
+          req.body.title,
+          authorsArray,
+          req.body.pub,
+          req.body.year,
+          req.body.issn,
+          req.body.journal
+        )
+      );
+      rdfRepositoryClient.update(payload).then(() => {
+        res.status(200).json(req.body.authors);
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
+router.post("/inProceedings", async (req, res, next) => {
+  var authorsArray = [];
+  req.body.authors.map(el => {
+    var uri = md5Hash(Math.random() * 66464654649494949797979464566);
+    authorsArray.push({
+      name: el,
+      authUri: uri
+    });
+  });
+
+  insertAllAuthors(authorsArray)
+    .then(response => {
+      const payload = createInsertQuery(
+        InsertQuery.insertInProceedings(
+          req.body.title,
+          authorsArray,
+          req.body.pub,
+          req.body.year,
+          req.body.isbn,
+          req.body.bookTitle,
+          req.body.editor
+        )
+      );
+      rdfRepositoryClient.update(payload).then(() => {
+        res.status(200).json(req.body.authors);
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+
 module.exports = router;
