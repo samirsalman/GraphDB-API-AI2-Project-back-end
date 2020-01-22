@@ -175,11 +175,12 @@ class QueryStrings {
       
       select ?book ?title ?name ?year ?isbn where { 
         ?book  a   bibo:${typeDoc} .
-          ?book bibo:isbn ?isbn .
+          
           ?book dc:title ?title .
           
           OPTIONAL{
           ?book dc:date ?year .
+          ?book bibo:isbn ?isbn .
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
           }

@@ -26,7 +26,7 @@ class InsertStrings {
     var authorString = "";
 
     author.map(el => {
-      authorString += `<http://purl.org/ontology/bibo/${uriDocument}>  dc:creator <http://purl.org/ontology/bibo/${el.authUri}> . `;
+      authorString += `<http://purl.org/ontology/bibo/${uriDocument}>  dc0:creator <http://purl.org/ontology/bibo/${el.authUri}> . `;
     });
 
     if (publisher !== null) {
@@ -69,7 +69,7 @@ class InsertStrings {
             {
                 <http://purl.org/ontology/bibo/${uri}> rdf:type foaf:Person .
               <http://purl.org/ontology/bibo/${uri}> rdf:type owl:NamedIndividual .
-                <http://purl.org/ontology/bibo/${uri}> foaf:Name "${name.toString()}" .
+                <http://purl.org/ontology/bibo/${uri}> foaf:name "${name.toString()}" .
             }`;
   };
 }
