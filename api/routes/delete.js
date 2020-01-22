@@ -76,6 +76,10 @@ var query = router.delete("/:uri", (req, res, next) => {
         res.status(200).json({
             response: "Success"
         })
+    }).catch((error) => {
+        res.status(500).json({
+            response: "Error"
+        })
     });
 });
 
