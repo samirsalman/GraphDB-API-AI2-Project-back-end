@@ -60,17 +60,18 @@ var query = router.put("/*", (req, res, next) => {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
     );
+    res.header("Content-Type", "application/json");
     next();
 });
 
 /*Update isbn and/or publisher of a book*/
-var query = router.put("/:uri", (req, res, next) => {
+var query = router.put("/book", (req, res, next) => {
     clearDataStructures();
 
     var query = UpdateStringsConst.updateBookQuery(
-        req.params.uri,
-        req.params.isbn,
-        req.params.publisher
+        req.body.uri,
+        req.body.isbn,
+        req.body.publisher
     );
 
     const payload = createUpdateQuery(query);
@@ -88,13 +89,13 @@ var query = router.put("/:uri", (req, res, next) => {
 
 
 /*Update issn  and/or journalTitle of an Article*/
-var query = router.put("/:uri", (req, res, next) => {
+var query = router.put("/article", (req, res, next) => {
     clearDataStructures();
 
     var query = UpdateStringsConst.updateArticleQuery(
-        req.params.uri,
-        req.param.issn,
-        req.param.journal
+        req.body.uri,
+        req.body.issn,
+        req.body.journal
     );
 
     const payload = createUpdateQuery(query);
@@ -113,15 +114,15 @@ var query = router.put("/:uri", (req, res, next) => {
 
 
 /*Update isbn and/or publisher and/or editor and/or bookTitle of an inProceeding*/
-var query = router.put("/:uri", (req, res, next) => {
+var query = router.put("/inProceedings", (req, res, next) => {
     clearDataStructures();
 
     var query = UpdateStringsConst.updateInProceedingsQuery(
-        req.params.uri,
-        req.param.bookTitle,
-        req.param.editor,
-        req.param.isbn,
-        req.params.publisher
+        req.body.uri,
+        req.body.bookTitle,
+        req.body.editor,
+        req.body.isbn,
+        req.body.publisher
     );
 
     const payload = createUpdateQuery(query);
