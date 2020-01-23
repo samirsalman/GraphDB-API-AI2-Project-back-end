@@ -110,18 +110,18 @@ class UpdateStrings {
         DELETE {
             ${bookTitleDel}
             ${isbnDel}
-            ${bookTitleDel}
+            ${publisherDel}
             ${editorDel}
         } WHERE {
             ${bookTitleDel}
             ${isbnDel}
-            ${bookTitleDel}
+            ${publisherDel}
             ${editorDel}
         };
         INSERT DATA {
             ${bookTitleIns}
             ${isbnIns}
-            ${bookTitleIns}
+            ${publisherIns}
             ${editorIns}
         } `;
     };
