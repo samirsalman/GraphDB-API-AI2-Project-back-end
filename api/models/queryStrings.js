@@ -17,22 +17,29 @@ class QueryStrings {
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
-    select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
-        ?book  a   bibo:Document .
-        ?book dc:title ?title .
-        ?book rdf:type ?type .
-        
-        OPTIONAL{
-          ?book dc:date ?year .
-          ?book dc0:creator ?authors .
-          ?authors foaf:name ?name .
-          OPTIONAL {  ?book dc:publisher ?pub .}
-          OPTIONAL { ?book bibo:booktitle ?booktitle .}
-          OPTIONAL { ?book bibo:journaltitle ?journ .}
-          OPTIONAL {?book dc0:editor ?edit .}
-          OPTIONAL {?book bibo:isbn ?isbn .}
-          OPTIONAL {?book bibo:issn ?issn .}
-          }
+    select ?book ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
+      ?book  a   bibo:${typeDoc} .
+      ?book a ?type .
+      ?book dc:title ?title .
+
+      
+      OPTIONAL{
+        ?book dc:date ?year .
+        ?book dc0:creator ?authors .
+        ?authors foaf:name ?name .
+        OPTIONAL {  ?book dc:publisher ?pub .}
+        OPTIONAL { ?book bibo:booktitle ?booktitle .}
+        OPTIONAL { ?book bibo:journaltitle ?journ .}
+        OPTIONAL {?book dc0:editor ?edit .}
+        OPTIONAL {?book bibo:isbn ?isbn .}
+        OPTIONAL {?book bibo:issn ?issn .}
+        }
+
+        FILTER NOT EXISTS{
+          ?subtype ^a ?book.
+          ?subtype rdfs:subClassOf ?type .
+          filter(?subtype != ?type) .
+      }
         ${yearString}
     }`;
   };
@@ -74,8 +81,10 @@ class QueryStrings {
       PREFIX owl: <http://www.w3.org/2002/07/owl#>
       
       select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
-        ?book  a  bibo:${typeDoc} .
+        ?book  a   bibo:${typeDoc} .
+          ?book a ?type .
           ?book dc:title ?title .
+
           
           OPTIONAL{
             ?book dc:date ?year .
@@ -89,7 +98,11 @@ class QueryStrings {
             OPTIONAL {?book bibo:issn ?issn .}
             }
 
-          ${filterString}
+            FILTER NOT EXISTS{
+              ?subtype ^a ?book.
+              ?subtype rdfs:subClassOf ?type .
+              filter(?subtype != ?type) .
+          }
 
           FILTER ((regex(?isbn, "${isbn}", "i")) ${yearString}) .
          
@@ -134,7 +147,9 @@ class QueryStrings {
       
       select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
           ?book  a   bibo:${typeDoc} .
+          ?book a ?type .
           ?book dc:title ?title .
+
           
           OPTIONAL{
             ?book dc:date ?year .
@@ -148,8 +163,11 @@ class QueryStrings {
             OPTIONAL {?book bibo:issn ?issn .}
             }
 
-          ${filterString}
-
+            FILTER NOT EXISTS{
+              ?subtype ^a ?book.
+              ?subtype rdfs:subClassOf ?type .
+              filter(?subtype != ?type) .
+          }
           FILTER ((regex(?title, "${title}", "i")) ${yearString}) .
          
       } ${orderedString}`;
@@ -192,8 +210,9 @@ class QueryStrings {
       
       select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
         ?book  a   bibo:${typeDoc} .
-          
+          ?book a ?type .
           ?book dc:title ?title .
+
           
           OPTIONAL{
             ?book dc:date ?year .
@@ -207,7 +226,11 @@ class QueryStrings {
             OPTIONAL {?book bibo:issn ?issn .}
             }
 
-          ${filterString}
+            FILTER NOT EXISTS{
+              ?subtype ^a ?book.
+              ?subtype rdfs:subClassOf ?type .
+              filter(?subtype != ?type) .
+          }
 
           FILTER ((regex(?name, "${author}", "i")) ${yearString}) .
           
