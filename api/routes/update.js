@@ -94,8 +94,8 @@ var query = router.put("/article", (req, res, next) => {
 
     var query = UpdateStringsConst.updateArticleQuery(
         req.body.uri,
-        req.body.issn,
-        req.body.journal
+        req.body.journal,
+        req.body.issn
     );
 
     const payload = createUpdateQuery(query);
@@ -120,9 +120,9 @@ var query = router.put("/inProceedings", (req, res, next) => {
     var query = UpdateStringsConst.updateInProceedingsQuery(
         req.body.uri,
         req.body.bookTitle,
-        req.body.editor,
         req.body.isbn,
-        req.body.publisher
+        req.body.publisher,
+        req.body.editor
     );
 
     const payload = createUpdateQuery(query);
