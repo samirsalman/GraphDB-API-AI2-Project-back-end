@@ -66,7 +66,14 @@ function createResults(bindings) {
     bindings.title != null ? bindings.title.value.replace(new RegExp("[{,}]", "g"), "") : "",
     bindings.year != null ? bindings.year.value : "",
     bindings.name != null ? bindings.name.value.replace(",", " ") : "",
-    bindings.isbn != null ? bindings.isbn.value : ""
+    bindings.isbn != null ? bindings.isbn.value : "",
+    bindings.issn != null ? bindings.issn.value : "",
+    bindings.edit != null ? bindings.edit.value : "",
+    bindings.journ != null ? bindings.journ.value : "",
+    bindings.pub != null ? bindings.pub.value : "",
+    bindings.booktitle != null ? bindings.booktitle.value : "",
+    bindings.type
+
   );
   if (hashResult.get(t.uri.id) !== undefined) {
     console.log(t.uri.id);
