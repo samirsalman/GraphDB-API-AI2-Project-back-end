@@ -66,8 +66,10 @@ var query = router.put("/*", (req, res, next) => {
 var query = router.put("/:uri", (req, res, next) => {
     clearDataStructures();
 
-    var query = UpdateStringsConst.updateQuery(
-        req.params.uri
+    var query = UpdateStringsConst.updateBookQuery(
+        req.params.uri,
+        req.params.publisher,
+        req.params.isbn
     );
 
     const payload = createUpdateQuery(query);

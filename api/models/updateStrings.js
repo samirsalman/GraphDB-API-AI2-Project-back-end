@@ -2,11 +2,15 @@ class UpdateStrings {
     updateBookQuery = (uri, publisher = null, isbn = null) => {
         var publisherIns = "";
         var isbnIns = "";
+        var publisherDel = "";
+        var isbnDel = "";
 
         if (publisher != null) {
-            publisherIns = `<http://purl.org/ontology/bibo/${uri}> dc:publisher "${publisher}" .`
+            publisherDel = `<http://purl.org/ontology/bibo/${uri}> dc0:publisher ?pub .`
+            publisherIns = `<http://purl.org/ontology/bibo/${uri}> dc0:publisher "${publisher}" .`
         }
         if (isbn != null) {
+            isbnDel = `<http://purl.org/ontology/bibo/${uri}> bibo:isbn ?isbn .`
             isbnIns = `<http://purl.org/ontology/bibo/${uri}> bibo:isbn "${isbn}" .`
         }
 
@@ -18,8 +22,12 @@ class UpdateStrings {
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         
-        DELETE DATA {${publisherIns}
-                     ${isbnIns}};
+        DELETE {${publisherDel}
+                     ${isbnDel}
+        } WHERE {
+            ${publisherDel}
+            ${isbnDel}
+        };
         INSERT DATA {${publisherIns}
                      ${isbnIns}} `;
     };
