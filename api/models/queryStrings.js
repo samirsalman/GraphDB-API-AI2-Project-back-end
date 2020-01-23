@@ -126,10 +126,11 @@ class QueryStrings {
           ?book dc:title ?title .
           
           OPTIONAL{
-          ?book bibo:isbn ?isbn .
           ?book dc:date ?year .
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
+          OPTIONAL{?book bibo:isbn ?isbn .}
+          OPTIONAL{?book bibo:issn ?isbn .}
           }
 
           ${filterString}
@@ -181,9 +182,10 @@ class QueryStrings {
           
           OPTIONAL{
           ?book dc:date ?year .
-          ?book bibo:isbn ?isbn .
           ?book dc0:creator ?authors .
           ?authors foaf:name ?name .
+          OPTIONAL{?book bibo:isbn ?isbn .}
+          OPTIONAL{?book bibo:issn ?isbn .}
           }
 
           ${filterString}
