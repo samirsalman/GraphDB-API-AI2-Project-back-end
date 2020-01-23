@@ -1,3 +1,4 @@
+/*Connect the server to the IA2 repository on GraphDB*/
 const { ServerClient, ServerClientConfig } = require("graphdb").server;
 const {
   RepositoryClientConfig,
@@ -60,6 +61,7 @@ var query = router.get("/*", (req, res, next) => {
   next();
 });
 
+/*This function create an object of type QueryDocument using the result obtained from the SPARQL query to GraphDB*/
 function createResults(bindings) {
   var t = new QueryDocument(
     bindings.book,
@@ -90,11 +92,16 @@ function createResults(bindings) {
   }
 }
 
+
+
+/*Use this route to search all*/
 var query = router.get("/all", (req, res, next) => {
-  clearDataStructures();
   console.log("GET ALL RECEIVED");
   console.log(req.query.year);
+  clearDataStructures();
+
   query = QueryStringsConst.allQuery(req.query.year);
+
   const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
@@ -109,10 +116,12 @@ var query = router.get("/all", (req, res, next) => {
   });
 });
 
+
+
+/*Use this route (replacing the GET parameter with the title of the document) to search by title */
 router.get("/searchByTitle/:name", (req, res, next) => {
   console.log("GET BY TITLE RECEIVED");
   console.log(req.query);
-
   clearDataStructures();
 
   var query = QueryStringsConst.searchByTitleQuery(
@@ -123,7 +132,6 @@ router.get("/searchByTitle/:name", (req, res, next) => {
   );
 
   const payload = createSelectQuery(query);
-
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       console.log(bindings);
@@ -138,10 +146,13 @@ router.get("/searchByTitle/:name", (req, res, next) => {
   });
 });
 
-router.get("/searchByIsbn/:isbn", (req, res, next) => {
-  clearDataStructures();
-  console.log("GET BY ISBN RECEIVED");
 
+
+/*Use this route (replacing the GET parameter with the ISBN of the document) to search by ISBN */
+router.get("/searchByIsbn/:isbn", (req, res, next) => {
+  console.log("GET BY ISBN RECEIVED");
+  console.log(req.query);
+  clearDataStructures();
 
   query = QueryStringsConst.searchByISBNQuery(
     req.params.isbn,
@@ -151,7 +162,6 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
   );
 
   const payload = createSelectQuery(query);
-
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       createResults(bindings);
@@ -165,10 +175,13 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
   });
 });
 
+
+
+/*Use this route (replacing the GET parameter with the name of an author) to search by author */
 router.get("/searchByAuthor/:author", (req, res, next) => {
-  clearDataStructures();
   console.log("GET BY AUTHOR RECEIVED");
   console.log(req.query);
+  clearDataStructures();
 
   query = QueryStringsConst.searchByAuthorQuery(
     req.params.author,
@@ -178,7 +191,6 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
   );
 
   const payload = createSelectQuery(query);
-
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       console.log(bindings);

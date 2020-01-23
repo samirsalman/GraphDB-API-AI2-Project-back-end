@@ -69,6 +69,7 @@ function createInsertQuery(query) {
     .setTimeout(5);
 }
 
+/*Insert of a book (only after we had inserted its authors)*/
 var query = router.post("/book", async (req, res, next) => {
   var authorsArray = [];
   req.body.authors.map(el => {
@@ -104,6 +105,9 @@ var query = router.post("/book", async (req, res, next) => {
     });
 });
 
+
+
+/*Insert of an article (only after we had inserted its authors)*/
 router.post("/article", async (req, res, next) => {
   var authorsArray = [];
   req.body.authors.map(el => {
@@ -120,7 +124,6 @@ router.post("/article", async (req, res, next) => {
         InsertQuery.insertArticle(
           req.body.title,
           authorsArray,
-          req.body.pub,
           req.body.year,
           req.body.issn,
           req.body.journal
@@ -140,6 +143,7 @@ router.post("/article", async (req, res, next) => {
     });
 });
 
+/*Insert of an inProceeding (only after we had inserted its authors)*/
 router.post("/inProceedings", async (req, res, next) => {
   var authorsArray = [];
   req.body.authors.map(el => {
