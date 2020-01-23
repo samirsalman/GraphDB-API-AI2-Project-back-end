@@ -1,5 +1,6 @@
 class QueryStrings {
   allQuery = (year = null) => {
+    var typeDoc = "Document";
 
     var yearString = "";
     if (year !== null) {
@@ -104,7 +105,7 @@ class QueryStrings {
               filter(?subtype != ?type) .
           }
 
-          FILTER ((regex(?isbn, "${isbn}", "i")) ${yearString}) .
+          FILTER ((regex(?isbn, "${isbn}", "i")) ||(regex(?issn, "${isbn}", "i"))  ${yearString}) .
          
       } ${orderedString}`;
   };
