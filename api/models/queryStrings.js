@@ -17,12 +17,18 @@ class QueryStrings {
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
-    select ?book ?title ?name ?year ?isbn where { 
-      ?book  a   bibo:Document .
-        ?book bibo:isbn ?isbn .
+    select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
+        ?book  a   bibo:Document .
         ?book dc:title ?title .
+        ?book rdf:type ?type .
         
         OPTIONAL{
+        ?book bibo:booktitle ?booktitle .
+        ?book bibo:journaltitle ?journ .
+        ?book dc0:editor ?edit .
+        ?book bibo:issn ?issn .
+        ?book dc:publisher ?pub .
+        ?book bibo:isbn ?isbn .
         ?book dc:date ?year .
         ?book dc0:creator ?authors .
         ?authors foaf:name ?name .
