@@ -63,13 +63,38 @@ var query = router.put("/*", (req, res, next) => {
     next();
 });
 
+/*Update isbn and/or publisher of a book*/
 var query = router.put("/:uri", (req, res, next) => {
     clearDataStructures();
 
     var query = UpdateStringsConst.updateBookQuery(
         req.params.uri,
-        req.params.publisher,
-        req.params.isbn
+        req.params.isbn,
+        req.params.publisher
+    );
+
+    const payload = createUpdateQuery(query);
+    rdfRepositoryClient.update(payload).then(() => {
+        res.status(200).json({
+            response: "Success"
+        })
+    }).catch((error) => {
+        res.status(500).json({
+            response: "Error"
+        })
+    });
+});
+
+
+
+/*Update issn  and/or journalTitle of an Article*/
+var query = router.put("/:uri", (req, res, next) => {
+    clearDataStructures();
+
+    var query = UpdateStringsConst.updateArticleQuery(
+        req.params.uri,
+        req.param.issn,
+        req.param.journal
     );
 
     const payload = createUpdateQuery(query);
@@ -84,6 +109,5 @@ var query = router.put("/:uri", (req, res, next) => {
         })
     });
 });
-
 
 module.exports = router;
