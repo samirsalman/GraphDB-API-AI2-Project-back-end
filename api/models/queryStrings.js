@@ -115,6 +115,8 @@ class QueryStrings {
     var yearString = "";
     var typeDoc = "Document";
     var filterString = "";
+    var typeIsNull = "";
+    var filterTypeNull = "";
 
     if (orderBy !== null) {
       if (orderBy === "year") {
@@ -137,6 +139,13 @@ class QueryStrings {
         ?c rdfs:subClassOf+ bibo:${typeDoc} .
         FILTER (?c != bibo:${typeDoc}) .
       }`;
+    } else if (type === null) {
+      typeIsNull = `?book a ?type .`;
+      filterTypeNull = `FILTER NOT EXISTS{
+          ?subtype ^a ?book.
+          ?subtype rdfs:subClassOf ?type .
+          filter(?subtype != ?type) .
+      }`;
     }
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
       PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -148,10 +157,9 @@ class QueryStrings {
       
       select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
           ?book  a   bibo:${typeDoc} .
-          ?book a ?type .
+          ${typeIsNull}
           ?book dc:title ?title .
-
-          
+        
           OPTIONAL{
             ?book dc:date ?year .
             ?book dc0:creator ?authors .
@@ -163,12 +171,9 @@ class QueryStrings {
             OPTIONAL {?book bibo:isbn ?isbn .}
             OPTIONAL {?book bibo:issn ?issn .}
             }
-
-            FILTER NOT EXISTS{
-              ?subtype ^a ?book.
-              ?subtype rdfs:subClassOf ?type .
-              filter(?subtype != ?type) .
-          }
+            ${filterString}
+            ${filterTypeNull}
+            
           FILTER ((regex(?title, "${title}", "i")) ${yearString}) .
          
       } ${orderedString}`;
