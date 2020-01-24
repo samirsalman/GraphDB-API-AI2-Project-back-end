@@ -28,7 +28,7 @@ class QueryStrings {
         ?book dc:date ?year .
         ?book dc0:creator ?authors .
         ?authors foaf:name ?name .
-        OPTIONAL {  ?book dc:publisher ?pub .}
+        OPTIONAL {  ?book dc0:publisher ?pub .}
         OPTIONAL { ?book bibo:booktitle ?booktitle .}
         OPTIONAL { ?book bibo:journaltitle ?journ .}
         OPTIONAL {?book dc0:editor ?edit .}
@@ -91,7 +91,7 @@ class QueryStrings {
             ?book dc:date ?year .
             ?book dc0:creator ?authors .
             ?authors foaf:name ?name .
-            OPTIONAL {  ?book dc:publisher ?pub .}
+            OPTIONAL {  ?book dc0:publisher ?pub .}
             OPTIONAL { ?book bibo:booktitle ?booktitle .}
             OPTIONAL { ?book bibo:journaltitle ?journ .}
             OPTIONAL {?book dc0:editor ?edit .}
@@ -164,7 +164,7 @@ class QueryStrings {
             ?book dc:date ?year .
             ?book dc0:creator ?authors .
             ?authors foaf:name ?name .
-            OPTIONAL {  ?book dc:publisher ?pub .}
+            OPTIONAL {  ?book dc0:publisher ?pub .}
             OPTIONAL { ?book bibo:booktitle ?booktitle .}
             OPTIONAL { ?book bibo:journaltitle ?journ .}
             OPTIONAL {?book dc0:editor ?edit .}
@@ -224,7 +224,7 @@ class QueryStrings {
             ?book dc:date ?year .
             ?book dc0:creator ?authors .
             ?authors foaf:name ?name .
-            OPTIONAL {  ?book dc:publisher ?pub .}
+            OPTIONAL {  ?book dc0:publisher ?pub .}
             OPTIONAL { ?book bibo:booktitle ?booktitle .}
             OPTIONAL { ?book bibo:journaltitle ?journ .}
             OPTIONAL {?book dc0:editor ?edit .}

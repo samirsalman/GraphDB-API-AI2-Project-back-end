@@ -5,11 +5,11 @@ class UpdateStrings {
         var publisherDel = "";
         var isbnDel = "";
 
-        if (publisher != null) {
+        if (publisher !== null) {
             publisherDel = `<http://purl.org/ontology/bibo/${uri}> dc0:publisher ?pub .`
             publisherIns = `<http://purl.org/ontology/bibo/${uri}> dc0:publisher "${publisher}" .`
         }
-        if (isbn != null) {
+        if (isbn !== null) {
             isbnDel = `<http://purl.org/ontology/bibo/${uri}> bibo:isbn ?isbn .`
             isbnIns = `<http://purl.org/ontology/bibo/${uri}> bibo:isbn "${isbn}" .`
         }
@@ -40,11 +40,11 @@ class UpdateStrings {
         var journalTitleDel = "";
         var issnDel = "";
 
-        if (journalTitle != null) {
+        if (journalTitle !== null) {
             journalTitleDel = `<http://purl.org/ontology/bibo/${uri}> bibo:journaltitle ?journal .`
             journalTitleIns = `<http://purl.org/ontology/bibo/${uri}> bibo:journaltitle "${journalTitle}" .`
         }
-        if (issn != null) {
+        if (issn !== null) {
             issnDel = `<http://purl.org/ontology/bibo/${uri}> bibo:issn ?issn .`
             issnIns = `<http://purl.org/ontology/bibo/${uri}> bibo:issn "${issn}" .`
         }
@@ -82,21 +82,21 @@ class UpdateStrings {
         var publisherDel = "";
         var editorDel = "";
 
-        if (bookTitle != null) {
+        if (bookTitle !== null) {
             bookTitleDel = `<http://purl.org/ontology/bibo/${uri}> bibo:booktitle ?booktitle .`
             bookTitleIns = `<http://purl.org/ontology/bibo/${uri}> bibo:booktitle "${bookTitle}" .`
         }
-        if (isbn != null) {
+        if (isbn !== null) {
             isbnDel = `<http://purl.org/ontology/bibo/${uri}> bibo:isbn ?isbn .`
             isbnIns = `<http://purl.org/ontology/bibo/${uri}> bibo:isbn "${isbn}" .`
         }
-        if (publisher != null) {
+        if (publisher !== null) {
             publisherDel = `<http://purl.org/ontology/bibo/${uri}> dc0:publisher ?pub .`
             publisherIns = `<http://purl.org/ontology/bibo/${uri}> dc0:publisher "${publisher}" .`
         }
-        if (editor != null) {
-            editorDel = `<http://purl.org/ontology/bibo/${uri}> bibo:editor ?editor .`
-            editorIns = `<http://purl.org/ontology/bibo/${uri}> bibo:editor "${editor}" .`
+        if (editor !== null) {
+            editorDel = `<http://purl.org/ontology/bibo/${uri}> dc0:editor ?editor .`
+            editorIns = `<http://purl.org/ontology/bibo/${uri}> dc0:editor "${editor}" .`
         }
 
         return `PREFIX bibo: <http://purl.org/ontology/bibo/>
