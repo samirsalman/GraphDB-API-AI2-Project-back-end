@@ -60,18 +60,18 @@ var query = router.put("/*", (req, res, next) => {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
     );
-    res.header("Content-Type", "application/json");
     next();
 });
 
 /*Update isbn and/or publisher of a book*/
 var query = router.put("/book", (req, res, next) => {
     clearDataStructures();
+    console.log(req.body.isbn);
 
     var query = UpdateStringsConst.updateBookQuery(
         req.body.uri,
-        req.body.isbn,
-        req.body.publisher
+        req.body.publisher,
+        req.body.isbn
     );
 
     const payload = createUpdateQuery(query);
