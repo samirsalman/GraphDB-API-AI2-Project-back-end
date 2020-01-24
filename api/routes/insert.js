@@ -86,9 +86,9 @@ var query = router.post("/book", async (req, res, next) => {
         InsertQuery.insertBook(
           req.body.title,
           authorsArray,
-          req.body.pub,
+          req.body.publisher,
           req.body.year,
-          req.body.isbn
+          req.body.isbn,
         )
       );
       rdfRepositoryClient.update(payload).then(() => {
@@ -160,7 +160,7 @@ router.post("/inProceedings", async (req, res, next) => {
         InsertQuery.insertInProceedings(
           req.body.title,
           authorsArray,
-          req.body.pub,
+          req.body.publisher,
           req.body.year,
           req.body.isbn,
           req.body.bookTitle,

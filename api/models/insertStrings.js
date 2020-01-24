@@ -30,7 +30,7 @@ class InsertStrings {
     });
 
     if (publisher !== null) {
-      publisherIns = `<http://purl.org/ontology/bibo/${uriDocument}> dc:publisher "${publisher.toString()}" .`;
+      publisherIns = `<http://purl.org/ontology/bibo/${uriDocument}> dc0:publisher "${publisher.toString()}" .`;
     }
     if (isbn !== null) {
       isbnIns = `<http://purl.org/ontology/bibo/${uriDocument}> bibo:isbn "${isbn}" .`;
@@ -58,13 +58,11 @@ class InsertStrings {
   insertArticle = (
     title,
     author = null,
-    publisher = null,
     year = null,
     issn = null,
     journal = null
   ) => {
     var authorsConc = "";
-    var publisherIns = "";
     var issnIns = "";
     var journalIns = "";
 
@@ -85,9 +83,6 @@ class InsertStrings {
       authorString += `<http://purl.org/ontology/bibo/${uriDocument}>  dc0:creator <http://purl.org/ontology/bibo/${el.authUri}> . `;
     });
 
-    if (publisher !== null) {
-      publisherIns = `<http://purl.org/ontology/bibo/${uriDocument}> dc:publisher "${publisher.toString()}" .`;
-    }
     if (issn !== null) {
       issnIns = `<http://purl.org/ontology/bibo/${uriDocument}> bibo:issn "${issn}" .`;
     }
@@ -108,7 +103,6 @@ class InsertStrings {
                   <http://purl.org/ontology/bibo/${uriDocument}>          rdf:type bibo:Article .
                   ${authorString}
                   <http://purl.org/ontology/bibo/${uriDocument}>          dc:title "${title.toString()}" .
-                  ${publisherIns}
                   <http://purl.org/ontology/bibo/${uriDocument}>          dc:date "${year}" .
                   ${issnIns}
                   ${journalIns}
@@ -148,7 +142,7 @@ class InsertStrings {
     });
 
     if (publisher !== null) {
-      publisherIns = `<http://purl.org/ontology/bibo/${uriDocument}> dc:publisher "${publisher.toString()}" .`;
+      publisherIns = `<http://purl.org/ontology/bibo/${uriDocument}> dc0:publisher "${publisher.toString()}" .`;
     }
     if (isbn !== null) {
       isbnIns = `<http://purl.org/ontology/bibo/${uriDocument}> bibo:isbn "${isbn}" .`;
