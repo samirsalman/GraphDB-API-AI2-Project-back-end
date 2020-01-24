@@ -16,6 +16,7 @@ const QueryDocument = require("../models/queryDocument");
 const QueryStrings = require("../models/queryStrings");
 const express = require("express");
 const router = express.Router();
+const { trc } = require("graphdb").transaction;
 
 var QueryStringsConst = new QueryStrings();
 var results = [];
@@ -205,6 +206,7 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
     });
   });
 });
+
 
 
 module.exports = router;
