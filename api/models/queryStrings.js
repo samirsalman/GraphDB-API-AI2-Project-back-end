@@ -42,6 +42,7 @@ class QueryStrings {
           filter(?subtype != ?type) .
       }
         ${yearString}
+        FILTER(?type = bibo:Article || ?type = bibo:Book || ?type = bibo:InProceedings) .
     }`;
   };
 
@@ -106,6 +107,7 @@ class QueryStrings {
           }
 
           FILTER ((regex(?isbn, "${isbn}", "i")) ||(regex(?issn, "${isbn}", "i"))  ${yearString}) .
+          FILTER(?type = bibo:Article || ?type = bibo:Book || ?type = bibo:InProceedings) .
          
       } ${orderedString}`;
   };
@@ -171,10 +173,15 @@ class QueryStrings {
             OPTIONAL {?book bibo:isbn ?isbn .}
             OPTIONAL {?book bibo:issn ?issn .}
             }
-            ${filterString}
-            ${filterTypeNull}
+            
+            FILTER NOT EXISTS{
+              ?subtype ^a ?book.
+              ?subtype rdfs:subClassOf ?type .
+              filter(?subtype != ?type) .
+          }
             
           FILTER ((regex(?title, "${title}", "i")) ${yearString}) .
+          FILTER(?type = bibo:Article || ?type = bibo:Book || ?type = bibo:InProceedings) .
          
       } ${orderedString}`;
   };
@@ -239,9 +246,41 @@ class QueryStrings {
           }
 
           FILTER ((regex(?name, "${author}", "i")) ${yearString}) .
+          FILTER(?type = bibo:Article || ?type = bibo:Book || ?type = bibo:InProceedings) .
           
       }${orderedString}`;
   };
+
+  searchRelated = (title) => {
+    var titleParts = title.split(" ");
+    var filtering = "";
+    var verify = true;
+    for (el in titleParts) {
+      if (el.length > 4 && !verify) {
+        filtering += `|| (regex(?title, "${el}", "i"))`;
+      } else if (el.length > 4 && verify) {
+        filtering = `(regex(?title, "", "i"))`;
+        verify = false;
+      }
+    }
+
+    return `PREFIX dc: <http://purl.org/dc/elements/1.1/>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX dc0: <http://purl.org/dc/terms/>
+    select ?book ?title ?name ?year where { 
+        ?book dc:title ?title .
+        
+         OPTIONAL{
+                ?book dc:date ?year .
+                ?book dc0:creator ?authors .
+                ?authors foaf:name ?name .
+        }
+        
+        FILTER (${filtering}) .
+        
+    } `;
+  };
+
 }
 
 module.exports = QueryStrings;
