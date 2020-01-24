@@ -131,7 +131,7 @@ router.get("/searchByTitle/:name", (req, res, next) => {
     req.query.type
   );
 
-  const payload = createSelectQuery(query);
+  const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       console.log(bindings);
@@ -161,7 +161,7 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
     req.query.type
   );
 
-  const payload = createSelectQuery(query);
+  const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       createResults(bindings);
@@ -190,7 +190,7 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
     req.query.type
   );
 
-  const payload = createSelectQuery(query);
+  const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       console.log(bindings);
