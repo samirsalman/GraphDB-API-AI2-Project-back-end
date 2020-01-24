@@ -18,7 +18,7 @@ class QueryStrings {
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
-    select ?book ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
+    select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
       ?book  a   bibo:${typeDoc} .
       ?book a ?type .
       ?book dc:title ?title .
