@@ -100,10 +100,13 @@ function createResults(bindings) {
 /*Use this route to search all*/
 var query = router.get("/all", (req, res, next) => {
   console.log("GET ALL RECEIVED");
-  console.log(req.query.year);
+  console.log(req.query);
   clearDataStructures();
 
-  query = QueryStringsConst.allQuery(req.query.year);
+  query = QueryStringsConst.allQuery(
+    req.query.year,
+    req.query.type
+  );
 
   const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
@@ -142,6 +145,7 @@ router.get("/download/:uri", (req, res, next) => {
     })
     .catch(err => res.sendStatus(500).send(err));
 });
+
 
 /*Use this route (replacing the GET parameter with the title of the document) to search by title */
 router.get("/searchByTitle/:name", (req, res, next) => {
