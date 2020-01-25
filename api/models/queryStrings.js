@@ -1,6 +1,10 @@
 class QueryStrings {
-  allQuery = (year = null) => {
+  allQuery = (year = null, type = null) => {
     var typeDoc = "Document";
+
+    if (type !== null) {
+      typeDoc = type.toString();
+    }
 
     var yearString = "";
     if (year !== null) {
@@ -9,6 +13,7 @@ class QueryStrings {
       var year2 = splitting[1];
       yearString = `FILTER ((xsd:integer (?year) >= ${year1}) && (xsd:integer(?year) <= ${year2})) . `;
     }
+
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
     PREFIX dc0: <http://purl.org/dc/terms/>
@@ -40,11 +45,13 @@ class QueryStrings {
           ?subtype ^a ?book.
           ?subtype rdfs:subClassOf ?type .
           filter(?subtype != ?type) .
-      }
+        }
         ${yearString}
         FILTER(?type = bibo:Article || ?type = bibo:Book || ?type = bibo:InProceedings) .
     }`;
   };
+
+
 
   searchByISBNQuery = (isbn, orderBy = null, year = null, type = null) => {
     var orderedString = "";

@@ -98,10 +98,13 @@ function createResults(bindings) {
 /*Use this route to search all*/
 var query = router.get("/all", (req, res, next) => {
   console.log("GET ALL RECEIVED");
-  console.log(req.query.year);
+  console.log(req.query);
   clearDataStructures();
 
-  query = QueryStringsConst.allQuery(req.query.year);
+  query = QueryStringsConst.allQuery(
+    req.query.year,
+    req.query.type
+  );
 
   const payload = createSelectQuery(query).setLimit(40);
   rdfRepositoryClient.query(payload).then(stream => {
@@ -116,6 +119,7 @@ var query = router.get("/all", (req, res, next) => {
     });
   });
 });
+
 
 
 
