@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+<rdf:Description rdf:about="http://purl.org/ontology/bibo/e5128c330414029e8a3990537d76fecd">
+	<date xmlns="http://purl.org/dc/elements/1.1/">2007</date>
+	<title xmlns="http://purl.org/dc/elements/1.1/">Ontology visualization methods---a survey</title>
+	<creator xmlns="http://purl.org/dc/terms/" rdf:resource="http://purl.org/ontology/bibo/077759287730585840872984062363"/>
+	<creator xmlns="http://purl.org/dc/terms/" rdf:resource="http://purl.org/ontology/bibo/107096278865263813139149222757"/>
+	<creator xmlns="http://purl.org/dc/terms/" rdf:resource="http://purl.org/ontology/bibo/510655747631199051321749892034"/>
+	<creator xmlns="http://purl.org/dc/terms/" rdf:resource="http://purl.org/ontology/bibo/845746953389282807787492243247"/>
+	<creator xmlns="http://purl.org/dc/terms/" rdf:resource="http://purl.org/ontology/bibo/913463377410441833025626039944"/>
+	<doi xmlns="http://purl.org/ontology/bibo/">http://doi.acm.org/10.1145/1287620.1287621</doi>
+	<issn xmlns="http://purl.org/ontology/bibo/">0360-0300</issn>
+	<journaltitle xmlns="http://purl.org/ontology/bibo/">ACM Comput. Surv.</journaltitle>
+	<pages xmlns="http://purl.org/ontology/bibo/">10</pages>
+	<volume xmlns="http://purl.org/ontology/bibo/">39</volume>
+	<localityName xmlns="http://schemas.talis.com/2005/address/schema#">New York, NY, USA</localityName>
+	<rdf:type rdf:resource="http://purl.org/ontology/bibo/Article"/>
+</rdf:Description>
+
+</rdf:RDF>

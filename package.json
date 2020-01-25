@@ -10,6 +10,7 @@
   "author": "Samir Salman",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "blueimp-md5": "^2.12.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

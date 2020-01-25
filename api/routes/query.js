@@ -12,6 +12,9 @@ const {
   QueryLanguage,
   QueryPayload
 } = require("graphdb").query;
+const fs = require("fs");
+const axios = require("axios");
+
 const QueryDocument = require("../models/queryDocument");
 const QueryStrings = require("../models/queryStrings");
 const express = require("express");
@@ -66,7 +69,9 @@ var query = router.get("/*", (req, res, next) => {
 function createResults(bindings) {
   var t = new QueryDocument(
     bindings.book,
-    bindings.title != null ? bindings.title.value.replace(new RegExp("[{,}]", "g"), "") : "",
+    bindings.title != null
+      ? bindings.title.value.replace(new RegExp("[{,}]", "g"), "")
+      : "",
     bindings.year != null ? bindings.year.value : "",
     bindings.name != null ? bindings.name.value.replace(",", " ") : "",
     bindings.isbn != null ? bindings.isbn.value : "",
@@ -76,7 +81,6 @@ function createResults(bindings) {
     bindings.pub != null ? bindings.pub.value : "",
     bindings.booktitle != null ? bindings.booktitle.value : "",
     bindings.type
-
   );
   if (hashResult.get(t.uri.id) !== undefined) {
     console.log(t.uri.id);
@@ -92,8 +96,6 @@ function createResults(bindings) {
     hashResult.set(t.uri.id, t);
   }
 }
-
-
 
 /*Use this route to search all*/
 var query = router.get("/all", (req, res, next) => {
@@ -117,7 +119,29 @@ var query = router.get("/all", (req, res, next) => {
   });
 });
 
+router.get("/download/:uri", (req, res, next) => {
+  console.log("DW RECEIVED");
+  console.log(req.params.uri);
+  const header = {
+    Accept: "application/rdf+xml",
+    "X-GraphDB-Repository": "IA2Project"
+  };
 
+  axios.default
+    .get(
+      `http://localhost:7200/rest/explore/graph?uri=${req.params.uri}&role=subject&inference=explicit&bnodes=true&sameAs=true`,
+      { headers: header, responseType: "stream" }
+    )
+    .then(result => {
+      var file = fs.createWriteStream(__dirname + "/my.rdf");
+      var r = result.data.pipe(file);
+      r.on("finish", () => {
+        file.close();
+        res.download(`${__dirname}/my.rdf`, "result.rdf");
+      });
+    })
+    .catch(err => res.sendStatus(500).send(err));
+});
 
 /*Use this route (replacing the GET parameter with the title of the document) to search by title */
 router.get("/searchByTitle/:name", (req, res, next) => {
@@ -147,8 +171,6 @@ router.get("/searchByTitle/:name", (req, res, next) => {
   });
 });
 
-
-
 /*Use this route (replacing the GET parameter with the ISBN of the document) to search by ISBN */
 router.get("/searchByIsbn/:isbn", (req, res, next) => {
   console.log("GET BY ISBN RECEIVED");
@@ -175,8 +197,6 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
     });
   });
 });
-
-
 
 /*Use this route (replacing the GET parameter with the name of an author) to search by author */
 router.get("/searchByAuthor/:author", (req, res, next) => {
@@ -206,7 +226,5 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
     });
   });
 });
-
-
 
 module.exports = router;
