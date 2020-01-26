@@ -104,8 +104,8 @@ var query = router.get("/all", (req, res, next) => {
   clearDataStructures();
 
   query = QueryStringsConst.allQuery(
-    req.query.year,
     req.query.orderBy,
+    req.query.year,
     req.query.type
   );
 
