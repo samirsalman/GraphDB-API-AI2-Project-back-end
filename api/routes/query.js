@@ -232,4 +232,29 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
   });
 });
 
+router.get("/searchRelated/:title", (req, res, next) => {
+  console.log("GET BY RELATED RECEIVED");
+  console.log(req.query);
+  clearDataStructures();
+
+  query = QueryStringsConst.searchRelated(
+    req.params.title
+  );
+
+  const payload = createSelectQuery(query).setLimit(40);
+  rdfRepositoryClient.query(payload).then(stream => {
+    stream.on("data", bindings => {
+      console.log(bindings);
+
+      createResults(bindings);
+    });
+    stream.on("end", () => {
+      Array.from(hashResult.keys()).map(e => {
+        results.push(hashResult.get(e));
+      });
+      res.status(200).json(results);
+    });
+  });
+});
+
 module.exports = router;
