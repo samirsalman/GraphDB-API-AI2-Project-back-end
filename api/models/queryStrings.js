@@ -271,23 +271,42 @@ class QueryStrings {
     var verify = true;
     for (var j = 0; j < titleParts.length; j++) {
       if (titleParts[j].length > 4 && !verify) {
-        filtering += `|| (regex(?title, "${titleParts[j]}", "i"))`;
+        filtering += ` || (regex(?title, "${titleParts[j]}", "i"))`;
       } else if (titleParts[j].length > 4 && verify) {
-        filtering = `(regex(?title, "", "i"))`;
+        filtering = `(regex(?title, "${titleParts[j]}", "i"))`;
         verify = false;
       }
     }
 
-    return `PREFIX dc: <http://purl.org/dc/elements/1.1/>
-    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    return `PREFIX bibo: <http://purl.org/ontology/bibo/>
+    PREFIX dc: <http://purl.org/dc/elements/1.1/>
     PREFIX dc0: <http://purl.org/dc/terms/>
-    select ?book ?title ?name ?year where { 
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    
+    select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
+        ?book a bibo:Document .
+        ?book a ?type .
         ?book dc:title ?title .
         
-         OPTIONAL{
-                ?book dc:date ?year .
-                ?book dc0:creator ?authors .
-                ?authors foaf:name ?name .
+        OPTIONAL{
+          ?book dc:date ?year .
+          ?book dc0:creator ?authors .
+          ?authors foaf:name ?name .
+          OPTIONAL {  ?book dc0:publisher ?pub .}
+          OPTIONAL { ?book bibo:booktitle ?booktitle .}
+          OPTIONAL { ?book bibo:journaltitle ?journ .}
+          OPTIONAL {?book dc0:editor ?edit .}
+          OPTIONAL {?book bibo:isbn ?isbn .}
+          OPTIONAL {?book bibo:issn ?issn .}
+          }
+
+          FILTER NOT EXISTS{
+            ?subtype ^a ?book.
+            ?subtype rdfs:subClassOf ?type .
+            filter(?subtype != ?type) .
         }
         
         FILTER (${filtering}) .
