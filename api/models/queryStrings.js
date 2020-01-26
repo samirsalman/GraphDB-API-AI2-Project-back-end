@@ -265,25 +265,14 @@ class QueryStrings {
       }${orderedString}`;
   };
 
-  searchRelated = title => {
+  searchRelated = (title, uri) => {
     var titleParts = title.split(" ");
     var filtering = "";
-    var verify = true;
     for (var j = 0; j < titleParts.length; j++) {
       if (j != titleParts.length - 1) {
-        if (titleParts[j].length > 4 && !verify) {
-          filtering += `(regex(?title, "${titleParts[j]}", "i")) || `;
-        } else if (titleParts[j].length > 4 && verify) {
-          filtering = `(regex(?title, "${titleParts[j]}", "i")) || `;
-          verify = false;
-        }
+        filtering += `(regex(?title, "${titleParts[j]}", "i")) || `
       } else {
-        if (titleParts[j].length > 4 && !verify) {
-          filtering += `(regex(?title, "${titleParts[j]}", "i"))`;
-        } else if (titleParts[j].length > 4 && verify) {
-          filtering = `(regex(?title, "${titleParts[j]}", "i"))`;
-          verify = false;
-        }
+        filtering += `(regex(?title, "${titleParts[j]}", "i"))`;
       }
     }
 
@@ -294,7 +283,7 @@ class QueryStrings {
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
-    
+
     select ?book ?type ?title ?name ?year ?isbn ?pub ?issn ?edit ?journ ?booktitle where { 
         ?book a bibo:Document .
         ?book a ?type .
@@ -319,7 +308,8 @@ class QueryStrings {
         }
         
         FILTER (${filtering}) .
-        
+        FILTER (?book != <http://purl.org/ontology/bibo/${uri}>) .
+
     } `;
   };
 }
