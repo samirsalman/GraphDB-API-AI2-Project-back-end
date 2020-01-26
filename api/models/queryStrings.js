@@ -270,11 +270,20 @@ class QueryStrings {
     var filtering = "";
     var verify = true;
     for (var j = 0; j < titleParts.length; j++) {
-      if (titleParts[j].length > 4 && !verify) {
-        filtering += ` || (regex(?title, "${titleParts[j]}", "i"))`;
-      } else if (titleParts[j].length > 4 && verify) {
-        filtering = `(regex(?title, "${titleParts[j]}", "i"))`;
-        verify = false;
+      if (j != titleParts.length - 1) {
+        if (titleParts[j].length > 4 && !verify) {
+          filtering += `(regex(?title, "${titleParts[j]}", "i")) || `;
+        } else if (titleParts[j].length > 4 && verify) {
+          filtering = `(regex(?title, "${titleParts[j]}", "i")) || `;
+          verify = false;
+        }
+      } else {
+        if (titleParts[j].length > 4 && !verify) {
+          filtering += `(regex(?title, "${titleParts[j]}", "i"))`;
+        } else if (titleParts[j].length > 4 && verify) {
+          filtering = `(regex(?title, "${titleParts[j]}", "i"))`;
+          verify = false;
+        }
       }
     }
 
