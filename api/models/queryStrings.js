@@ -270,7 +270,7 @@ class QueryStrings {
     var filtering = "";
     for (var j = 0; j < titleParts.length; j++) {
       if (j != titleParts.length - 1) {
-        filtering += `(regex(?title, "${titleParts[j]}", "i")) || `
+        filtering += `(regex(?title, "${titleParts[j]}", "i")) || `;
       } else {
         filtering += `(regex(?title, "${titleParts[j]}", "i"))`;
       }
@@ -308,7 +308,7 @@ class QueryStrings {
         }
         
         FILTER (${filtering}) .
-        FILTER (?book != <http://purl.org/ontology/bibo/${uri}>) .
+        FILTER (?book != <${uri}>) .
 
     } `;
   };
