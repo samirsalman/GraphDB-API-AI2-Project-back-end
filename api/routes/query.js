@@ -147,7 +147,6 @@ router.get("/download/:uri", (req, res, next) => {
     .catch(err => res.sendStatus(500).send(err));
 });
 
-
 /*Use this route (replacing the GET parameter with the title of the document) to search by title */
 router.get("/searchByTitle/:name", (req, res, next) => {
   console.log("GET BY TITLE RECEIVED");
@@ -236,12 +235,11 @@ router.get("/searchRelated/:title", (req, res, next) => {
   console.log("GET BY RELATED RECEIVED");
   console.log(req.query);
   clearDataStructures();
+  console.log(decodeURIComponent(req.params.title));
 
-  query = QueryStringsConst.searchRelated(
-    req.params.title
-  );
+  query = QueryStringsConst.searchRelated(decodeURIComponent(req.params.title));
 
-  const payload = createSelectQuery(query).setLimit(40);
+  const payload = createSelectQuery(query).setLimit(10);
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       console.log(bindings);

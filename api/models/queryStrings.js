@@ -60,8 +60,6 @@ class QueryStrings {
     } ${orderedString}`;
   };
 
-
-
   searchByISBNQuery = (isbn, orderBy = null, year = null, type = null) => {
     var orderedString = "";
     var yearString = "";
@@ -267,14 +265,14 @@ class QueryStrings {
       }${orderedString}`;
   };
 
-  searchRelated = (title) => {
+  searchRelated = title => {
     var titleParts = title.split(" ");
     var filtering = "";
     var verify = true;
-    for (el in titleParts) {
-      if (el.length > 4 && !verify) {
-        filtering += `|| (regex(?title, "${el}", "i"))`;
-      } else if (el.length > 4 && verify) {
+    for (var j = 0; j < titleParts.length; j++) {
+      if (titleParts[j].length > 4 && !verify) {
+        filtering += `|| (regex(?title, "${titleParts[j]}", "i"))`;
+      } else if (titleParts[j].length > 4 && verify) {
         filtering = `(regex(?title, "", "i"))`;
         verify = false;
       }
@@ -296,7 +294,6 @@ class QueryStrings {
         
     } `;
   };
-
 }
 
 module.exports = QueryStrings;
