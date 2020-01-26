@@ -1,9 +1,18 @@
 class QueryStrings {
-  allQuery = (year = null, type = null) => {
+  allQuery = (year = null, orderBy = null, type = null) => {
     var typeDoc = "Document";
+    var orderedString = "";
 
     if (type !== null) {
       typeDoc = type.toString();
+    }
+
+    if (orderBy !== null) {
+      if (orderBy === "year") {
+        orderedString = `ORDER BY DESC(?${orderBy})`;
+      } else {
+        orderedString = `ORDER BY (?${orderBy})`;
+      }
     }
 
     var yearString = "";
@@ -48,7 +57,7 @@ class QueryStrings {
         }
         ${yearString}
         FILTER(?type = bibo:Article || ?type = bibo:Book || ?type = bibo:InProceedings) .
-    }`;
+    } ${orderedString}`;
   };
 
 

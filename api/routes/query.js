@@ -105,6 +105,7 @@ var query = router.get("/all", (req, res, next) => {
 
   query = QueryStringsConst.allQuery(
     req.query.year,
+    req.query.orderBy,
     req.query.type
   );
 
