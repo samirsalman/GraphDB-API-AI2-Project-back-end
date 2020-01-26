@@ -1,5 +1,5 @@
 class QueryStrings {
-  allQuery = (year = null, orderBy = null, type = null) => {
+  allQuery = (orderBy = null, year = null, type = null) => {
     var typeDoc = "Document";
     var orderedString = "";
 
