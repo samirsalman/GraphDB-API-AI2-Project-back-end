@@ -246,7 +246,6 @@ router.get("/searchRelated/:title", (req, res, next) => {
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       console.log(bindings);
-
       createResults(bindings);
     });
     stream.on("end", () => {
