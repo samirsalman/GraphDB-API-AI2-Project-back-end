@@ -265,16 +265,22 @@ class QueryStrings {
       }${orderedString}`;
   };
 
+  replaceTitleString = (str) => {
+    return str.replace("/", " ").replace("\\", " ").replace(":", " ").replace("-", " ").replace("[", " ").replace("]", " ").replace("{", " ").replace("}", " ").replace("(", " ").replace(")", " ");
+
+  }
+
   searchRelated = (title, uri) => {
     var titleParts = title.split(" ");
     var filtering = "";
     for (var j = 0; j < titleParts.length; j++) {
-      if (j != titleParts.length - 1) {
-        filtering += `(regex(?title, "${titleParts[j]}", "i")) || `
-      } else {
-        filtering += `(regex(?title, "${titleParts[j]}", "i"))`;
+      if (j !== titleParts.length - 1 && titleParts[j].length > 3) {
+        filtering += `(regex(?title, "${this.replaceTitleString(titleParts[j])}", "i")) || `;
+      } else if (j === titleParts.length - 1 && titleParts[j].length > 3) {
+        filtering += `(regex(?title, "${this.replaceTitleString(titleParts[j])}", "i"))`;
       }
     }
+
 
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
     PREFIX dc: <http://purl.org/dc/elements/1.1/>

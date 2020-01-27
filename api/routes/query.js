@@ -237,7 +237,7 @@ router.get("/searchRelated/:title", (req, res, next) => {
   clearDataStructures();
   console.log(decodeURI(req.params.title));
 
-  query = QueryStringsConst.searchRelated(decodeURIComponent(req.params.title), req.params.uri);
+  query = QueryStringsConst.searchRelated(decodeURIComponent(req.params.title), req.query.uri);
 
   const payload = createSelectQuery(query).setLimit(10);
   rdfRepositoryClient.query(payload).then(stream => {
