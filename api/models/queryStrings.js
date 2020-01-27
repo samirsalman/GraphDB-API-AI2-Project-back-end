@@ -265,6 +265,20 @@ class QueryStrings {
       }${orderedString}`;
   };
 
+  replaceTitleString = str => {
+    return str
+      .replace("/", " ")
+      .replace("\\", " ")
+      .replace(":", " ")
+      .replace("-", " ")
+      .replace("[", " ")
+      .replace("]", " ")
+      .replace("{", " ")
+      .replace("}", " ")
+      .replace("(", " ")
+      .replace(")", " ");
+  };
+
   searchRelated = (title, uri) => {
     var titleParts = title.split(" ");
     var filtering = "";
