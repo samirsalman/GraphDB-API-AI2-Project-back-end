@@ -259,7 +259,6 @@ router.get("/searchRelated/:title", (req, res, next) => {
 
 router.get("/numberOf/book", (req, res, next) => {
   console.log("GET BY RELATED RECEIVED");
-  console.log(req.query);
   clearDataStructures();
   console.log(decodeURI(req.params.title));
 
@@ -267,15 +266,13 @@ router.get("/numberOf/book", (req, res, next) => {
 
   const payload = createSelectQuery(query);
   rdfRepositoryClient.query(payload).then(stream => {
+    var x = 0;
     stream.on("data", bindings => {
       console.log(bindings);
-      createResults(bindings);
+      x = bindings.sumBook.value;
     });
     stream.on("end", () => {
-      Array.from(hashResult.keys()).map(e => {
-        results.push(hashResult.get(e));
-      });
-      res.status(200).json(results.length);
+      res.status(200).json(x);
     });
   });
 });
@@ -287,18 +284,15 @@ router.get("/numberOf/article", (req, res, next) => {
   console.log(decodeURI(req.params.title));
 
   query = QueryStringsConst.getNumbersOfArticle();
-
   const payload = createSelectQuery(query);
   rdfRepositoryClient.query(payload).then(stream => {
+    var x = 0;
     stream.on("data", bindings => {
       console.log(bindings);
-      createResults(bindings);
+      x = bindings.sumBook.value;
     });
     stream.on("end", () => {
-      Array.from(hashResult.keys()).map(e => {
-        results.push(hashResult.get(e));
-      });
-      res.status(200).json(results.length);
+      res.status(200).json(x);
     });
   });
 });
@@ -313,15 +307,13 @@ router.get("/numberOf/inproceedings", (req, res, next) => {
 
   const payload = createSelectQuery(query);
   rdfRepositoryClient.query(payload).then(stream => {
+    var x = 0;
     stream.on("data", bindings => {
       console.log(bindings);
-      createResults(bindings);
+      x = bindings.sumBook.value;
     });
     stream.on("end", () => {
-      Array.from(hashResult.keys()).map(e => {
-        results.push(hashResult.get(e));
-      });
-      res.status(200).json(results.length);
+      res.status(200).json(x);
     });
   });
 });

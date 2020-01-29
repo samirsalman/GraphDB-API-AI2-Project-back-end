@@ -136,17 +136,12 @@ class QueryStrings {
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
-    select ?book   where { 
+    select  (COUNT(?book) AS ?sumBook)   where { 
       ?book  a   bibo:Book .
-        ?book rdf:type ?type .
-        
         FILTER NOT EXISTS{
-        ?book a bibo:Proceedings .
-        } 
-        
-    }
-     GROUPBY ?book
-    `;
+            ?book a bibo:Proceedings .
+        }
+    }`;
   };
 
   getNumbersOfArticle = () => {
@@ -159,12 +154,9 @@ class QueryStrings {
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
-    select ?book   where { 
+    select  (COUNT(?book) AS ?sumBook)   where { 
       ?book  a   bibo:Article .
-      ?book rdf:type ?type .  
-    }
-     GROUPBY ?book
-    `;
+    }`;
   };
 
   getNumbersOfInProceedings = () => {
@@ -177,11 +169,9 @@ class QueryStrings {
     PREFIX owl: <http://www.w3.org/2002/07/owl#>
     PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     
-    select ?book   where { 
+    select  (COUNT(?book) AS ?sumBook)   where { 
       ?book  a   bibo:InProceedings .
-        ?book rdf:type ?type .
     }
-     GROUPBY ?book
     `;
   };
 
@@ -342,11 +332,19 @@ class QueryStrings {
     var titleParts = title.split(" ");
     var filtering = "";
     for (var j = 0; j < titleParts.length; j++) {
-      if (j < titleParts.length && titleParts[j].length > 3 && filtering !== "") {
+      if (
+        j < titleParts.length &&
+        titleParts[j].length > 3 &&
+        filtering !== ""
+      ) {
         filtering += ` || (regex(?title, "${this.replaceTitleString(
           titleParts[j]
         )}", "i"))`;
-      } else if (j < titleParts.length && titleParts[j].length > 3 && filtering === "") {
+      } else if (
+        j < titleParts.length &&
+        titleParts[j].length > 3 &&
+        filtering === ""
+      ) {
         filtering += `(regex(?title, "${this.replaceTitleString(
           titleParts[j]
         )}", "i"))`;
