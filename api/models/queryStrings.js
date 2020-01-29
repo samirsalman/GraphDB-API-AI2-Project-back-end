@@ -342,11 +342,11 @@ class QueryStrings {
     var titleParts = title.split(" ");
     var filtering = "";
     for (var j = 0; j < titleParts.length; j++) {
-      if (j !== titleParts.length - 1 && titleParts[j].length > 3) {
-        filtering += `(regex(?title, "${this.replaceTitleString(
+      if (j < titleParts.length && titleParts[j].length > 3 && filtering !== "") {
+        filtering += ` || (regex(?title, "${this.replaceTitleString(
           titleParts[j]
-        )}", "i")) ||`;
-      } else if (j === titleParts.length - 1 && titleParts[j].length > 3) {
+        )}", "i"))`;
+      } else if (j < titleParts.length && titleParts[j].length > 3 && filtering === "") {
         filtering += `(regex(?title, "${this.replaceTitleString(
           titleParts[j]
         )}", "i"))`;
