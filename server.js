@@ -11,7 +11,7 @@ const app = express();
 //define the port on which the server will listen
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, function () {
+app.listen(PORT, function() {
   console.log(`I'm listening on port : `, PORT);
 });
 
@@ -20,7 +20,7 @@ app.get("/", (req, res, next) => {
   res.writeHead(200, {
     "Content-Type": "text/html"
   });
-  fs.readFile("home.html", function (err, html) {
+  fs.readFile("home.html", function(err, html) {
     if (err) {
       console.log("ERROR");
 

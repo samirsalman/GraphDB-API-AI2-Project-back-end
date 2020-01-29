@@ -257,4 +257,73 @@ router.get("/searchRelated/:title", (req, res, next) => {
   });
 });
 
+router.get("/numberOf/book", (req, res, next) => {
+  console.log("GET BY RELATED RECEIVED");
+  console.log(req.query);
+  clearDataStructures();
+  console.log(decodeURI(req.params.title));
+
+  query = QueryStringsConst.getNumbersOfBook();
+
+  const payload = createSelectQuery(query);
+  rdfRepositoryClient.query(payload).then(stream => {
+    stream.on("data", bindings => {
+      console.log(bindings);
+      createResults(bindings);
+    });
+    stream.on("end", () => {
+      Array.from(hashResult.keys()).map(e => {
+        results.push(hashResult.get(e));
+      });
+      res.status(200).json(results.length);
+    });
+  });
+});
+
+router.get("/numberOf/article", (req, res, next) => {
+  console.log("GET BY RELATED RECEIVED");
+  console.log(req.query);
+  clearDataStructures();
+  console.log(decodeURI(req.params.title));
+
+  query = QueryStringsConst.getNumbersOfArticle();
+
+  const payload = createSelectQuery(query);
+  rdfRepositoryClient.query(payload).then(stream => {
+    stream.on("data", bindings => {
+      console.log(bindings);
+      createResults(bindings);
+    });
+    stream.on("end", () => {
+      Array.from(hashResult.keys()).map(e => {
+        results.push(hashResult.get(e));
+      });
+      res.status(200).json(results.length);
+    });
+  });
+});
+
+router.get("/numberOf/inproceedings", (req, res, next) => {
+  console.log("GET BY RELATED RECEIVED");
+  console.log(req.query);
+  clearDataStructures();
+  console.log(decodeURI(req.params.title));
+
+  query = QueryStringsConst.getNumbersOfInProceedings();
+
+  const payload = createSelectQuery(query);
+  rdfRepositoryClient.query(payload).then(stream => {
+    stream.on("data", bindings => {
+      console.log(bindings);
+      createResults(bindings);
+    });
+    stream.on("end", () => {
+      Array.from(hashResult.keys()).map(e => {
+        results.push(hashResult.get(e));
+      });
+      res.status(200).json(results.length);
+    });
+  });
+});
+
 module.exports = router;
