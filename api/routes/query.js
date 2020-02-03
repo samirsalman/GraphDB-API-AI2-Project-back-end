@@ -36,6 +36,8 @@ const repositoryClientConfig = new RepositoryClientConfig(
   writeTimeout
 );
 
+/*FUNZIONI AUSILIARIE*/
+/*Metodo che ci connette al repository IA2 su GraphDB*/
 var rdfRepositoryClient;
 server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
   console.log("REPOSITORY GET");
@@ -44,6 +46,7 @@ server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
   rdfRepositoryClient.registerParser(new SparqlXmlResultParser());
 });
 
+/*Funzione che, data una query in input (la query già scritta in linguaggio SPARQL) crea il payload della richiesta http da inviare */
 function createSelectQuery(query) {
   return new GetQueryPayload()
     .setQuery(query)
@@ -51,11 +54,13 @@ function createSelectQuery(query) {
     .setResponseType(RDFMimeType.SPARQL_RESULTS_XML);
 }
 
+/*Funzione che svuota l'array dei risultati per ospitarne di nuovi*/
 function clearDataStructures() {
   results = [];
   hashResult.clear();
 }
 
+/* Metodo che permette di connettersi al repository da qualsiasi dominio esterno/*/
 var query = router.get("/*", (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header(
@@ -97,7 +102,10 @@ function createResults(bindings) {
   }
 }
 
-/*Use this route to search all*/
+
+
+/*METODI*/
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/all */
 var query = router.get("/all", (req, res, next) => {
   console.log("GET ALL RECEIVED");
   console.log(req.query);
@@ -110,6 +118,7 @@ var query = router.get("/all", (req, res, next) => {
   );
 
   const payload = createSelectQuery(query).setLimit(40);
+
   rdfRepositoryClient.query(payload).then(stream => {
     stream.on("data", bindings => {
       createResults(bindings);
@@ -123,6 +132,9 @@ var query = router.get("/all", (req, res, next) => {
   });
 });
 
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/download con parametro uri */
 router.get("/download/:uri", (req, res, next) => {
   console.log("DW RECEIVED");
   console.log(req.params.uri);
@@ -147,7 +159,9 @@ router.get("/download/:uri", (req, res, next) => {
     .catch(err => res.sendStatus(500).send(err));
 });
 
-/*Use this route (replacing the GET parameter with the title of the document) to search by title */
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/searchByTitle con parametro name */
 router.get("/searchByTitle/:name", (req, res, next) => {
   console.log("GET BY TITLE RECEIVED");
   console.log(req.query);
@@ -175,7 +189,9 @@ router.get("/searchByTitle/:name", (req, res, next) => {
   });
 });
 
-/*Use this route (replacing the GET parameter with the ISBN of the document) to search by ISBN */
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/searchByIsbn con parametro isbn */
 router.get("/searchByIsbn/:isbn", (req, res, next) => {
   console.log("GET BY ISBN RECEIVED");
   console.log(req.query);
@@ -202,7 +218,9 @@ router.get("/searchByIsbn/:isbn", (req, res, next) => {
   });
 });
 
-/*Use this route (replacing the GET parameter with the name of an author) to search by author */
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/searchByAuthor con parametro author */
 router.get("/searchByAuthor/:author", (req, res, next) => {
   console.log("GET BY AUTHOR RECEIVED");
   console.log(req.query);
@@ -231,6 +249,9 @@ router.get("/searchByAuthor/:author", (req, res, next) => {
   });
 });
 
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/searchRelated con parametro title */
 router.get("/searchRelated/:title", (req, res, next) => {
   console.log("GET BY RELATED RECEIVED");
   console.log(req.query);
@@ -257,6 +278,9 @@ router.get("/searchRelated/:title", (req, res, next) => {
   });
 });
 
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/numberOf/book*/
 router.get("/numberOf/book", (req, res, next) => {
   console.log("GET BY RELATED RECEIVED");
   clearDataStructures();
@@ -277,6 +301,9 @@ router.get("/numberOf/book", (req, res, next) => {
   });
 });
 
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/numberOf/article*/
 router.get("/numberOf/article", (req, res, next) => {
   console.log("GET BY RELATED RECEIVED");
   console.log(req.query);
@@ -297,6 +324,9 @@ router.get("/numberOf/article", (req, res, next) => {
   });
 });
 
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /query/numberOf/inproceedings*/
 router.get("/numberOf/inproceedings", (req, res, next) => {
   console.log("GET BY RELATED RECEIVED");
   console.log(req.query);
