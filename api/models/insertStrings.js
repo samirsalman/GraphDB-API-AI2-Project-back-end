@@ -1,7 +1,8 @@
 const md5Hash = require("blueimp-md5");
 
 class InsertStrings {
-  insertBook = (
+  /*Update Book with these: title, authors, publisher, year (optional), isbn (optional)*/
+  insertBookQuery = (
     title,
     author = null,
     publisher = null,
@@ -55,7 +56,10 @@ class InsertStrings {
               }`;
   };
 
-  insertArticle = (
+
+
+  /*Update Article with these: title, authors (optional), journalTitle(optional), year (optional), issn (optional)*/
+  insertArticleQuery = (
     title,
     author = null,
     year = null,
@@ -109,7 +113,10 @@ class InsertStrings {
               }`;
   };
 
-  insertInProceedings = (
+
+
+  /*Update InProceedings with these: title, authors (optional), publisher (optional), year (optional), isbn (optional), bookTitle (optional), editor (optional)*/
+  insertInProceedingsQuery = (
     title,
     author = null,
     publisher = null,
@@ -175,7 +182,7 @@ class InsertStrings {
               }`;
   };
 
-  insertAuthor = (name, uri) => {
+  insertAuthorQuery = (name, uri) => {
     console.log(name);
 
     return `PREFIX bibo: <http://purl.org/ontology/bibo/>
