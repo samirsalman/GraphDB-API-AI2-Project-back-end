@@ -33,6 +33,8 @@ const repositoryClientConfig = new RepositoryClientConfig(
     writeTimeout
 );
 
+/*FUNZIONI AUSILIARIE*/
+/*Metodo che ci connette al repository IA2 su GraphDB*/
 var rdfRepositoryClient;
 server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
     console.log("REPOSITORY GET");
@@ -41,6 +43,17 @@ server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
     rdfRepositoryClient.registerParser(new SparqlXmlResultParser());
 });
 
+/* Metodo che permette di connettersi al repository da qualsiasi dominio esterno/*/
+var query = router.put("/*", (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+
+/*Funzione che, data una query in input (la query già scritta in linguaggio SPARQL) crea il payload della richiesta http da inviare */
 function createUpdateQuery(query) {
     return new UpdateQueryPayload()
         .setQuery(query)
@@ -49,31 +62,30 @@ function createUpdateQuery(query) {
         .setTimeout(5);
 }
 
+/*Funzione che svuota l'array dei risultati per ospitarne di nuovi*/
 function clearDataStructures() {
     results = [];
     hashResult.clear();
 }
 
-var query = router.put("/*", (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
 
-/*Update isbn and/or publisher of a book*/
+
+/*METODI*/
+/*Metodo da eseguire quando riceviamo una richiesta POST all'indirizzo /update/book */
 var query = router.put("/book", (req, res, next) => {
     clearDataStructures();
     console.log(req.body.isbn);
 
+    /*I dati ricevuti nel body della post li passiamo come parametri al metodo 
+      updateBookQuery (definito UpdateStringsConst ovvero nel file updateStrings.js ) 
+      che ci crea la query sparql e ce la restituisce*/
     var query = UpdateStringsConst.updateBookQuery(
         req.body.uri,
         req.body.publisher,
         req.body.isbn
     );
 
+    /*Ora che abbiamo la query sparql la scriviamo nel payload della http request*/
     const payload = createUpdateQuery(query);
     rdfRepositoryClient.update(payload).then(() => {
         res.status(200).json({
@@ -88,16 +100,20 @@ var query = router.put("/book", (req, res, next) => {
 
 
 
-/*Update issn  and/or journalTitle of an Article*/
+/*Metodo da eseguire quando riceviamo una richiesta POST all'indirizzo /update/article */
 var query = router.put("/article", (req, res, next) => {
     clearDataStructures();
 
+    /*I dati ricevuti nel body della post li passiamo come parametri al metodo 
+      updateArticleQuery (definito UpdateStringsConst ovvero nel file updateStrings.js ) 
+      che ci crea la query sparql e ce la restituisce*/
     var query = UpdateStringsConst.updateArticleQuery(
         req.body.uri,
         req.body.journal,
         req.body.issn
     );
 
+    /*Ora che abbiamo la query sparql la scriviamo nel payload della http request*/
     const payload = createUpdateQuery(query);
 
     rdfRepositoryClient.update(payload).then(() => {
@@ -113,10 +129,13 @@ var query = router.put("/article", (req, res, next) => {
 
 
 
-/*Update isbn and/or publisher and/or editor and/or bookTitle of an inProceeding*/
+/*Metodo da eseguire quando riceviamo una richiesta POST all'indirizzo /update/inProceedings */
 var query = router.put("/inProceedings", (req, res, next) => {
     clearDataStructures();
 
+    /*I dati ricevuti nel body della post li passiamo come parametri al metodo 
+      updateInProceedingsQuery (definito UpdateStringsConst ovvero nel file updateStrings.js ) 
+      che ci crea la query sparql e ce la restituisce*/
     var query = UpdateStringsConst.updateInProceedingsQuery(
         req.body.uri,
         req.body.bookTitle,
@@ -125,6 +144,7 @@ var query = router.put("/inProceedings", (req, res, next) => {
         req.body.editor
     );
 
+    /*Ora che abbiamo la query sparql la scriviamo nel payload della http request*/
     const payload = createUpdateQuery(query);
 
     rdfRepositoryClient.update(payload).then(() => {

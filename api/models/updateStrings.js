@@ -1,4 +1,5 @@
 class UpdateStrings {
+    /*Update isbn and/or publisher of an Book*/
     updateBookQuery = (uri, publisher = null, isbn = null) => {
         var publisherIns = "";
         var isbnIns = "";
@@ -22,18 +23,22 @@ class UpdateStrings {
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         
-        DELETE {${publisherDel}
-                     ${isbnDel}
+        DELETE {
+            ${publisherDel}
+            ${isbnDel}
         } WHERE {
             ${publisherDel}
             ${isbnDel}
         };
-        INSERT DATA {${publisherIns}
-                     ${isbnIns}} `;
+
+        INSERT DATA {
+            ${publisherIns}
+            ${isbnIns}
+        } `;
     };
 
 
-
+    /*Update issn and/or journalTitle of an Article*/
     updateArticleQuery = (uri, journalTitle = null, issn = null) => {
         var journalTitleIns = "";
         var issnIns = "";
@@ -71,7 +76,7 @@ class UpdateStrings {
     };
 
 
-
+    /*Update isbn and/or publisher and/or editor and/or bookTitle of an inProceeding*/
     updateInProceedingsQuery = (uri, bookTitle = null, isbn = null, publisher = null, editor = null) => {
         var bookTitleIns = "";
         var isbnIns = "";
