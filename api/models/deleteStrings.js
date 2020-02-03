@@ -1,5 +1,5 @@
 class DeleteStrings {
-
+    /*Update every triple that contain this uri*/
     deleteQuery = (uri) => {
 
         return `PREFIX bibo: <http://purl.org/ontology/bibo/>

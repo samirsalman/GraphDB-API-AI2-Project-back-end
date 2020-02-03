@@ -33,6 +33,8 @@ const repositoryClientConfig = new RepositoryClientConfig(
     writeTimeout
 );
 
+/*FUNZIONI AUSILIARIE*/
+/*Metodo che ci connette al repository IA2 su GraphDB*/
 var rdfRepositoryClient;
 server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
     console.log("REPOSITORY GET");
@@ -41,6 +43,7 @@ server.getRepository("IA2Project", repositoryClientConfig).then(rep => {
     rdfRepositoryClient.registerParser(new SparqlXmlResultParser());
 });
 
+/*Funzione che, data una query in input (la query già scritta in linguaggio SPARQL) crea il payload della richiesta http da inviare */
 function createDeleteQuery(query) {
     return new UpdateQueryPayload()
         .setQuery(query)
@@ -49,11 +52,13 @@ function createDeleteQuery(query) {
         .setTimeout(5);
 }
 
+/*Funzione che svuota l'array dei risultati per ospitarne di nuovi*/
 function clearDataStructures() {
     results = [];
     hashResult.clear();
 }
 
+/* Metodo che permette di connettersi al repository da qualsiasi dominio esterno/*/
 var query = router.delete("/*", (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header(
@@ -63,13 +68,21 @@ var query = router.delete("/*", (req, res, next) => {
     next();
 });
 
+
+
+
+/*Metodo da eseguire quando riceviamo una richiesta GET all'indirizzo /delete/uri */
 var query = router.delete("/:uri", (req, res, next) => {
     clearDataStructures();
 
+    /*Il parametro uri ricevuto nell'url della get lo passiamo come parametro al metodo 
+      deleteQuery (della classe DeleteStringsConst ovvero il file deleteStrings.js ) 
+      che ci crea la query sparql e ce la restituisce*/
     var query = DeleteStringsConst.deleteQuery(
         req.params.uri
     );
 
+    /*Ora che abbiamo la query sparql la scriviamo nel payload della http request*/
     const payload = createDeleteQuery(query);
 
     rdfRepositoryClient.update(payload).then(() => {
