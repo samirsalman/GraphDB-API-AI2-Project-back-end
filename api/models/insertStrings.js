@@ -1,7 +1,7 @@
 const md5Hash = require("blueimp-md5");
 
 class InsertStrings {
-  /*Update Book with these: title, authors, publisher, year (optional), isbn (optional)*/
+  /*Insert Book with these: title, authors, publisher, year (optional), isbn (optional)*/
   insertBookQuery = (
     title,
     author = null,
@@ -58,7 +58,7 @@ class InsertStrings {
 
 
 
-  /*Update Article with these: title, authors (optional), journalTitle(optional), year (optional), issn (optional)*/
+  /*Insert Article with these: title, authors (optional), journalTitle(optional), year (optional), issn (optional)*/
   insertArticleQuery = (
     title,
     author = null,
@@ -115,7 +115,7 @@ class InsertStrings {
 
 
 
-  /*Update InProceedings with these: title, authors (optional), publisher (optional), year (optional), isbn (optional), bookTitle (optional), editor (optional)*/
+  /*Insert InProceedings with these: title, authors (optional), publisher (optional), year (optional), isbn (optional), bookTitle (optional), editor (optional)*/
   insertInProceedingsQuery = (
     title,
     author = null,
